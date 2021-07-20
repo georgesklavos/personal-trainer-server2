@@ -1,22 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { Users } from './users.entity';
 import * as bcrypt from 'bcrypt';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Users)
+    private readonly usersRepository: Repository<Users>,
   ) {}
 
-  getAll(): Promise<User[]> {
-    return this.userRepository.find();
+  getAll(): Promise<Users[]> {
+    return this.usersRepository.find();
   }
 
-  async getOneById(id: number): Promise<User> {
+  async getOneById(id: number): Promise<Users> {
     try {
-      const user = await this.userRepository.findOneOrFail(id);
+      const user = await this.usersRepository.findOneOrFail(id);
       return user;
     } catch (err) {
       throw err;
@@ -28,24 +30,32 @@ export class UserService {
     password: string,
     systemType: number,
     currency: number,
-    avatar: string,
-    role: number,
-  ): Promise<User> {
+    language: string,
+  ): Promise<Users> {
     password = await bcrypt.hash(password, 10);
-    const newUser = this.userRepository.create({
+    const newUser = this.usersRepository.create({
       email,
       password,
       systemType,
       currency,
-      avatar,
-      role,
+      language,
     });
 
-    return await this.userRepository.save(newUser);
+    await validate(newUser).then((errors) => {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Invalid user information',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    });
+
+    return await this.usersRepository.save(newUser);
   }
 
   async findUser(emailInput: string): Promise<any> {
-    const user = await this.userRepository.findOne({
+    const user = await this.usersRepository.findOne({
       email: emailInput,
     });
     return user;

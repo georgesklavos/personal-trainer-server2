@@ -10,9 +10,9 @@ import {
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
-import { User } from './user/user.entity';
-import { UserInterceptor } from './user/user.interceptor';
-import { UserService } from './user/user.service';
+import { Users } from './users/users.entity';
+import { UserInterceptor } from './users/users.interceptor';
+import { UserService } from './users/users.service';
 
 @Controller('api')
 @UseInterceptors(UserInterceptor)
@@ -28,16 +28,15 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(JwtAuthGaurd)
+  // @UseGuards(JwtAuthGaurd)
   @Post('user')
-  async createUser(@Body() user: User) {
+  async createUser(@Body() user: Users) {
     return this.userService.createUser(
       user.email,
       user.password,
       user.systemType,
       user.currency,
-      user.avatar,
-      user.role,
+      user.language,
     );
   }
 

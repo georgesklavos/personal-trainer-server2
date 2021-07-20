@@ -8,11 +8,11 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   @IsEmail()
   email: string;
 
@@ -27,11 +27,8 @@ export class User {
   @IsInt()
   currency: number;
 
-  @Column()
-  avatar: string;
-
-  @Column()
-  role: number;
+  @Column({ default: 'en' })
+  language: string;
 
   @CreateDateColumn()
   created_at: Date;
