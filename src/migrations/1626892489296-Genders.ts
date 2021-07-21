@@ -1,19 +1,17 @@
-import { LanguagesSeed } from '../seeds/languages.seed';
+import { genderSeed } from '../seeds/gender.seed';
 import {
-  getRepository,
+  getConnection,
   MigrationInterface,
   QueryRunner,
   Table,
-  createQueryBuilder,
-  getConnection,
   TableIndex,
 } from 'typeorm';
 
-export class Languages1626811480642 implements MigrationInterface {
+export class Genders1626892489296 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'languages',
+        name: 'genders',
         columns: [
           {
             name: 'id',
@@ -21,14 +19,9 @@ export class Languages1626811480642 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: 'iso',
-            type: 'char',
-            length: '2',
-          },
-          {
-            name: 'name',
+            name: 'value',
             type: 'varchar',
-            length: '50',
+            length: '10',
           },
         ],
       }),
@@ -36,22 +29,19 @@ export class Languages1626811480642 implements MigrationInterface {
     );
 
     await queryRunner.createIndex(
-      'languages',
-      new TableIndex({
-        name: 'languageId',
-        columnNames: ['id'],
-      }),
+      'genders',
+      new TableIndex({ name: 'gendersId', columnNames: ['id'] }),
     );
 
     await getConnection()
       .createQueryBuilder()
       .insert()
-      .into('languages')
-      .values(LanguagesSeed)
+      .into('genders')
+      .values(genderSeed)
       .execute();
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    queryRunner.dropTable('languages');
+    queryRunner.dropTable('genders');
   }
 }
