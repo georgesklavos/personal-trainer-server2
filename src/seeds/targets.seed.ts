@@ -1,4 +1,4 @@
-export const targetSeed = [
+export const targetsSeed = [
   {
     id: 1,
     value: 'Gain mass',

@@ -1,4 +1,4 @@
-export const levelSeed = [
+export const levelsSeed = [
   {
     id: 1,
     value: 'Amatuer',

@@ -1,9 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Users } from './users.entity';
+import { Users } from '../entities/users.entity';
 import * as bcrypt from 'bcrypt';
 import { validate } from 'class-validator';
+import { Systems } from 'src/entities/systems.entity';
+import { Languages } from 'src/entities/languages.entity';
 
 @Injectable()
 export class UserService {
@@ -28,12 +30,12 @@ export class UserService {
   async createUser(
     email: string,
     password: string,
-    systemType: number,
+    systemType: Systems,
     currency: number,
-    language: string,
+    language: Languages,
   ): Promise<Users> {
     password = await bcrypt.hash(password, 10);
-    const newUser = this.usersRepository.create({
+    const newUser = await this.usersRepository.create({
       email,
       password,
       systemType,
@@ -41,7 +43,7 @@ export class UserService {
       language,
     });
 
-    await validate(newUser).then((errors) => {
+    await validate(newUser).catch((errors) => {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,

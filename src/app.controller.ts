@@ -10,7 +10,7 @@ import {
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
-import { Users } from './users/users.entity';
+import { Users } from './entities/users.entity';
 import { UserInterceptor } from './users/users.interceptor';
 import { UserService } from './users/users.service';
 

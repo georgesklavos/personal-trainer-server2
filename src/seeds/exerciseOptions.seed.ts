@@ -1,18 +1,18 @@
 export const exerciseOptionsSeed = [
   {
     id: 1,
-    name: 'Kg',
+    value: 'Kg',
   },
   {
     id: 2,
-    name: 'Min',
+    value: 'Min',
   },
   {
     id: 3,
-    name: 'Rep',
+    value: 'Rep',
   },
   {
     id: 4,
-    name: 'Sec',
+    value: 'Sec',
   },
 ];

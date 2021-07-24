@@ -5,11 +5,16 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Languages } from './languages.entity';
+import { Roles } from './roles.entity';
+import { Systems } from './systems.entity';
 
 @Entity()
 export class Users {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({ unique: true })
@@ -19,16 +24,22 @@ export class Users {
   @Column()
   password: string;
 
-  @Column()
+  @OneToOne(() => Systems)
+  @JoinColumn()
   @IsInt()
-  systemType: number;
+  systemType: Systems;
 
   @Column()
   @IsInt()
   currency: number;
 
-  @Column({ default: 'en' })
-  language: string;
+  @OneToOne(() => Languages)
+  @JoinColumn()
+  language: Languages;
+
+  @OneToOne(() => Roles)
+  @JoinColumn()
+  role: Roles;
 
   @CreateDateColumn()
   created_at: Date;

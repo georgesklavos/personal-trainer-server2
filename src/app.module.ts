@@ -11,7 +11,7 @@ import { OwnerTrainerModule } from './owner-trainer/owner-trainer.module';
 import { UserModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { Users } from './users/users.entity';
+import { Users } from './entities/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';

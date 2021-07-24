@@ -1,4 +1,4 @@
-export const exerciseModeSeed = [
+export const exerciseModesSeed = [
   {
     id: 1,
     value: 'Circuit',
