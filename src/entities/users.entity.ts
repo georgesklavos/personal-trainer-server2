@@ -5,9 +5,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
   JoinColumn,
+  ManyToMany,
 } from 'typeorm';
+import { Genders } from './genders.entity';
 import { Languages } from './languages.entity';
 import { Roles } from './roles.entity';
 import { Systems } from './systems.entity';
@@ -17,6 +18,12 @@ export class Users {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
+  @Column({ type: 'varchar' })
+  firstName: string;
+
+  @Column({ type: 'varchar' })
+  lastName: string;
+
   @Column({ unique: true })
   @IsEmail()
   email: string;
@@ -24,7 +31,7 @@ export class Users {
   @Column()
   password: string;
 
-  @OneToOne(() => Systems)
+  @ManyToMany(() => Systems)
   @JoinColumn()
   @IsInt()
   systemType: Systems;
@@ -33,11 +40,15 @@ export class Users {
   @IsInt()
   currency: number;
 
-  @OneToOne(() => Languages)
+  @ManyToMany(() => Genders)
+  @JoinColumn()
+  gender: Genders;
+
+  @ManyToMany(() => Languages)
   @JoinColumn()
   language: Languages;
 
-  @OneToOne(() => Roles)
+  @ManyToMany(() => Roles)
   @JoinColumn()
   role: Roles;
 
