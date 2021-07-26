@@ -16,7 +16,7 @@ export class Owners {
 
   @OneToOne(() => Users)
   @JoinColumn()
-  user: number;
+  user: Users;
 
   @Column({ type: 'varchar' })
   phone: string;

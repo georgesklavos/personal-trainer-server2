@@ -6,6 +6,8 @@ import * as bcrypt from 'bcrypt';
 import { validate } from 'class-validator';
 import { Systems } from 'src/entities/systems.entity';
 import { Languages } from 'src/entities/languages.entity';
+import { Genders } from 'src/entities/genders.entity';
+import { Roles } from 'src/entities/roles.entity';
 
 @Injectable()
 export class UserService {
@@ -28,19 +30,27 @@ export class UserService {
   }
 
   async createUser(
+    firstName: string,
+    lastName: string,
     email: string,
     password: string,
-    systemType: Systems,
     currency: number,
-    language: Languages,
+    genderId: Genders,
+    systemType: Systems,
+    languageId: Languages,
+    roleId: Roles,
   ): Promise<Users> {
     password = await bcrypt.hash(password, 10);
     const newUser = await this.usersRepository.create({
+      firstName,
+      lastName,
       email,
       password,
-      systemType,
       currency,
-      language,
+      gender: genderId,
+      systemType,
+      language: languageId,
+      role: roleId,
     });
 
     await validate(newUser).catch((errors) => {

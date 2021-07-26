@@ -27,22 +27,4 @@ export class AppController {
   login(@Request() req): any {
     return this.authService.login(req.user);
   }
-
-  // @UseGuards(JwtAuthGaurd)
-  @Post('user')
-  async createUser(@Body() user: Users) {
-    return this.userService.createUser(
-      user.email,
-      user.password,
-      user.systemType,
-      user.currency,
-      user.language,
-    );
-  }
-
-  @UseGuards(JwtAuthGaurd)
-  @Get('user')
-  async findUser(@Body('email') email: string) {
-    return this.userService.findUser(email);
-  }
 }

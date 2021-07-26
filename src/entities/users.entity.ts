@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
 } from 'typeorm';
 import { Genders } from './genders.entity';
 import { Languages } from './languages.entity';
@@ -31,7 +32,7 @@ export class Users {
   @Column()
   password: string;
 
-  @ManyToMany(() => Systems)
+  @ManyToOne(() => Systems)
   @JoinColumn()
   @IsInt()
   systemType: Systems;
@@ -40,15 +41,15 @@ export class Users {
   @IsInt()
   currency: number;
 
-  @ManyToMany(() => Genders)
+  @ManyToOne(() => Genders)
   @JoinColumn()
   gender: Genders;
 
-  @ManyToMany(() => Languages)
+  @ManyToOne(() => Languages)
   @JoinColumn()
   language: Languages;
 
-  @ManyToMany(() => Roles)
+  @ManyToOne(() => Roles)
   @JoinColumn()
   role: Roles;
 

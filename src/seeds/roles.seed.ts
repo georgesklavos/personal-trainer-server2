@@ -5,10 +5,14 @@ export const rolesSeed = [
   },
   {
     id: 2,
-    value: 'Trainer',
+    value: 'Owner',
   },
   {
     id: 3,
+    value: 'Trainer',
+  },
+  {
+    id: 4,
     value: 'Client',
   },
 ];

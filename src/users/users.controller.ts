@@ -1,33 +1,62 @@
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Request,
+  HttpException,
+  HttpStatus,
+  UseInterceptors,
+} from '@nestjs/common';
+import { Owners } from '../entities/owners.entity';
+import { Users } from '../entities/users.entity';
+import { OwnerService } from '../owner/owner.service';
+import { UserInterceptor } from './users.interceptor';
 // import { AuthService } from 'src/auth/auth.service';
 // // import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 // import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
 // import { User } from './user.entity';
-// import { UserService } from './user.service';
+import { UserService } from './users.service';
 
-@Controller('user')
+@Controller()
 export class UserController {
-  // constructor(
-  //   private readonly userService: UserService,
-  //   private readonly authService: AuthService,
-  // ) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly ownerService: OwnerService,
+  ) {}
+  @UseInterceptors(UserInterceptor)
+  @Post('signup')
+  async signup(@Body() body: Users & Owners) {
+    try {
+      const user = await this.userService.createUser(
+        body.firstName,
+        body.lastName,
+        body.email,
+        body.password,
+        body.currency,
+        body.gender,
+        body.systemType,
+        body.language,
+        body.role,
+      );
 
-  // @UseGuards(LocalAuthGuard)
-  // @Post('login')
-  // login(@Request() req): any {
-  //   return this.authService.login(req.user);
-  // }
-
-  // // @UseGuards(JwtAuthGaurd)
-  // @Post()
-  // async createUser(@Body() user: User): Promise<User> {
-  //   return this.userService.createUser(
-  //     user.email,
-  //     user.password,
-  //     user.systemType,
-  //     user.currency,
-  //     user.avatar,
-  //     user.role,
-  //   );
-  // }
+      await this.ownerService.createOwner(
+        user,
+        body.phone,
+        body.clients,
+        body.trainers,
+        body.active,
+      );
+      return user;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Invalid user information',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }
