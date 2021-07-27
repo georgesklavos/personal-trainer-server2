@@ -9,7 +9,7 @@ import { OwnerModule } from 'src/owner/owner.module';
 // import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Users]), OwnerModule],
+  imports: [TypeOrmModule.forFeature([Users])],
   providers: [UserService],
   controllers: [UserController],
   exports: [UserService],

@@ -19,44 +19,4 @@ import { UserInterceptor } from './users.interceptor';
 import { UserService } from './users.service';
 
 @Controller()
-export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly ownerService: OwnerService,
-  ) {}
-  @UseInterceptors(UserInterceptor)
-  @Post('signup')
-  async signup(@Body() body: Users & Owners) {
-    try {
-      const user = await this.userService.createUser(
-        body.firstName,
-        body.lastName,
-        body.email,
-        body.password,
-        body.currency,
-        body.gender,
-        body.systemType,
-        body.language,
-        body.role,
-      );
-
-      await this.ownerService.createOwner(
-        user,
-        body.phone,
-        body.clients,
-        body.trainers,
-        body.active,
-      );
-      return user;
-    } catch (err) {
-      console.log(err);
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'Invalid user information',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-}
+export class UserController {}

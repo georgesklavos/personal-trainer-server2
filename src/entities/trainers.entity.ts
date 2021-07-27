@@ -6,16 +6,22 @@ import {
   JoinColumn,
   ManyToMany,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Levels } from './levels.entity';
 import { Owners } from './owners.entity';
+import { Users } from './users.entity';
 
 @Entity()
 export class Trainers {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToOne(() => Users)
+  @JoinColumn()
+  user: Users;
 
   @ManyToOne(() => Owners)
   @JoinColumn()
@@ -27,7 +33,7 @@ export class Trainers {
 
   @ManyToMany(() => Levels)
   @JoinColumn()
-  level: number;
+  level: Levels;
 
   @Column({ type: 'boolean' })
   active: boolean;
