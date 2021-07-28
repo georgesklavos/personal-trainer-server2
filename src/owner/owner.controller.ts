@@ -77,10 +77,11 @@ export class OwnerController {
         body.language,
         body.role,
       );
+      const owner = await this.ownerService.findOwnerByUserId(req.user.id);
 
       await this.trainerService.createTrainer(
         user,
-        req.id,
+        owner,
         body.age,
         body.level,
         body.active,

@@ -39,4 +39,10 @@ export class OwnerService {
 
     return await this.ownersRepository.save(newOwner);
   }
+
+  async findOwnerByUserId(userId): Promise<Owners> {
+    const owner = await this.ownersRepository.findOne({ user: userId });
+
+    return owner;
+  }
 }
