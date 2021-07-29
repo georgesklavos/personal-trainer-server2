@@ -49,4 +49,8 @@ export class TrainerService {
 
     return await this.trainersRepository.save(newTrainer);
   }
+
+  async getTrainers(ownerId: Owners): Promise<Trainers[]> {
+    return await this.trainersRepository.find({ owner: ownerId });
+  }
 }

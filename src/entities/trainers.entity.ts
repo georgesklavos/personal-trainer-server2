@@ -19,7 +19,7 @@ export class Trainers {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Users)
+  @OneToOne(() => Users, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: Users;
 
@@ -31,7 +31,7 @@ export class Trainers {
   @IsInt()
   age: number;
 
-  @ManyToMany(() => Levels)
+  @ManyToOne(() => Levels)
   @JoinColumn()
   level: Levels;
 

@@ -31,7 +31,7 @@ export class OwnerService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
-          error: 'Invalid user information',
+          error: 'Invalid owner information',
         },
         HttpStatus.BAD_REQUEST,
       );

@@ -5,6 +5,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,7 +26,7 @@ export class Clients {
   @JoinColumn()
   user: Users;
 
-  @ManyToMany(() => Owners)
+  @ManyToOne(() => Owners)
   @JoinColumn()
   owner: Owners;
 
@@ -33,9 +34,9 @@ export class Clients {
   @IsInt()
   age: number;
 
-  @ManyToMany(() => Levels)
+  @ManyToOne(() => Levels)
   @JoinColumn()
-  level: number;
+  level: Levels;
 
   @Column({ type: 'boolean' })
   active: boolean;
@@ -43,7 +44,7 @@ export class Clients {
   @Column({ type: 'boolean' })
   payment: boolean;
 
-  @ManyToMany(() => Programs)
+  @ManyToOne(() => Programs)
   @JoinColumn()
   program: Programs;
 
@@ -53,7 +54,7 @@ export class Clients {
   @Column({ type: 'int', default: 0 })
   heightNumber: number;
 
-  @ManyToMany(() => Targets)
+  @ManyToOne(() => Targets)
   @JoinColumn()
   target: Targets;
 
@@ -66,7 +67,7 @@ export class Clients {
   @Column({ type: 'varchar' })
   notes: string;
 
-  @ManyToMany(() => Trainers)
+  @ManyToOne(() => Trainers)
   @JoinColumn()
   trainer: Trainers;
 
