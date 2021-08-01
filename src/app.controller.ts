@@ -21,10 +21,15 @@ export class AppController {
     private readonly userService: UserService,
     private readonly authService: AuthService,
   ) {}
-
+  //Vale tin diadikasia twn ips se allo service
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req): any {
-    return this.authService.login(req.user);
+    console.log(req.headers['user-agent']);
+    return this.authService.login(req.user, {
+      user: req.user.id,
+      ip: req.ip,
+      device: req.headers['user-agent'],
+    });
   }
 }
