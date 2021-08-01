@@ -158,9 +158,9 @@ export class OwnerController {
     try {
       const owner = await this.ownerService.findOwnerByUserId(req.user.id);
 
-      const users = await this.clientService.getClients(owner);
+      const clients = await this.clientService.getClientsOwner(owner);
 
-      return users;
+      return clients;
     } catch (err) {
       throw new HttpException(
         {

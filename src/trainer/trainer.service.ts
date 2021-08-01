@@ -51,6 +51,15 @@ export class TrainerService {
   }
 
   async getTrainers(ownerId: Owners): Promise<Trainers[]> {
-    return await this.trainersRepository.find({ owner: ownerId });
+    return await this.trainersRepository.find({
+      where: { owner: ownerId },
+      relations: ['user'],
+    });
+  }
+
+  async findTrainerByUserId(userId: Users): Promise<Trainers> {
+    const trainer = await this.trainersRepository.findOne({ user: userId });
+
+    return trainer;
   }
 }

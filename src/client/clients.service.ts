@@ -67,7 +67,17 @@ export class ClientService {
     return await this.clientsRepository.save(newClient);
   }
 
-  async getClients(ownerId: Owners): Promise<Clients[]> {
-    return await this.clientsRepository.find({ owner: ownerId });
+  async getClientsOwner(ownerId: Owners): Promise<Clients[]> {
+    return await this.clientsRepository.find({
+      where: { owner: ownerId },
+      relations: ['user'],
+    });
+  }
+
+  async getClientsTrainer(trainerId: Trainers): Promise<Clients[]> {
+    return await this.clientsRepository.find({
+      where: { trainer: trainerId },
+      relations: ['user'],
+    });
   }
 }
