@@ -6,7 +6,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
 } from 'typeorm';
 import { Genders } from './genders.entity';

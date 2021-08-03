@@ -17,7 +17,7 @@ export class LoginInformation {
   @ManyToOne(() => Users)
   user: Users;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   @IsIP()
   ip: string;
 
