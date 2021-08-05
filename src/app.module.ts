@@ -13,7 +13,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import * as ormconfig from '../ormconfig';
-import { LoginInformationModule } from './loginInformation/login-information/login-information.module';
+import { LoginInformationModule } from './loginInformation/login-information.module';
 
 @Module({
   imports: [

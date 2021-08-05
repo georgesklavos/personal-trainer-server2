@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CoolUpExercises } from './coolUpExercises.entity';
 import { ExerciseModes } from './exerciseModes.entity';
@@ -42,4 +44,10 @@ export class Exercise {
     (coolUpExercises) => coolUpExercises.exercise,
   )
   coolUpExercises: CoolUpExercises[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
