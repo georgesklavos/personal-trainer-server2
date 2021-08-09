@@ -14,7 +14,7 @@ import { WarmUpExercises } from './warmUpExercises.entity';
 import { WorkoutExercises } from './workoutExercises.entity';
 
 @Entity()
-export class Exercise {
+export class Exercises {
   @PrimaryGeneratedColumn()
   id: number;
 

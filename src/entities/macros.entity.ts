@@ -3,12 +3,11 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { macrosClient } from './macrosClient.entity';
-import { macrosTrainer } from './macrosTrainer.entity';
+import { MacrosClient } from './macrosClient.entity';
+import { MacrosTrainer } from './macrosTrainer.entity';
 import { Trainers } from './trainers.entity';
 import { Users } from './users.entity';
 
@@ -23,11 +22,11 @@ export class Macros {
   @ManyToOne(() => Trainers)
   trainer: Trainers;
 
-  @OneToMany(() => macrosClient, (macrosClient) => macrosClient.macro)
-  macrosClient: macrosClient;
+  @OneToMany(() => MacrosClient, (macrosClient) => macrosClient.macro)
+  macrosClient: MacrosClient;
 
-  @OneToMany(() => macrosTrainer, (macrosTrainer) => macrosTrainer.macro)
-  macrosTrainer: macrosTrainer;
+  @OneToMany(() => MacrosTrainer, (macrosTrainer) => macrosTrainer.macro)
+  macrosTrainer: MacrosTrainer;
 
   @CreateDateColumn()
   created_at: Date;

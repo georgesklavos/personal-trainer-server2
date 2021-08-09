@@ -9,23 +9,23 @@ import {
 import { Macros } from './macros.entity';
 
 @Entity()
-export class macrosTrainer {
+export class MacrosTrainer {
   @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => Macros, (macro) => macro.macrosTrainer)
   macro: Macros;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   proteins: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   carbs: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   fats: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   calories: number;
 
   @Column({ type: 'boolean', default: false })

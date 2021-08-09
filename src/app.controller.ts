@@ -23,11 +23,11 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req): any {
-    this.loginInformationService.loginInfo({
-      user: req.user.id,
-      ip: req.ip,
-      device: req.headers['user-agent'],
-    });
+    // this.loginInformationService.loginInfo({
+    //   user: req.user.id,
+    //   ip: req.ip,
+    //   device: req.headers['user-agent'],
+    // });
     return this.authService.login(req.user);
   }
 }

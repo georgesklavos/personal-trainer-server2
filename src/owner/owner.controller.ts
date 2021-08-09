@@ -20,6 +20,7 @@ import { OwnerService } from './owner.service';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { Clients } from 'src/entities/clients.entity';
 import { ClientService } from 'src/client/clients.service';
+import { MacrosService } from 'src/macros/macros.service';
 
 @Controller()
 export class OwnerController {
@@ -28,6 +29,7 @@ export class OwnerController {
     private readonly ownerService: OwnerService,
     private readonly trainerService: TrainerService,
     private readonly clientService: ClientService,
+    private readonly macrosService: MacrosService,
   ) {}
   @UseInterceptors(UserInterceptor)
   @Post('signup')
@@ -140,6 +142,8 @@ export class OwnerController {
         body.trainer,
         body.viewedByTrainer,
       );
+
+      await this.macrosService.createMacros(user, body.trainer);
     } catch (err) {
       console.log(err);
       throw new HttpException(

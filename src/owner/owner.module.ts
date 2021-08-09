@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientModule } from 'src/client/clients.module';
-import { Users } from 'src/entities/users.entity';
+import { MacrosModule } from 'src/macros/macros.module';
 import { TrainerModule } from 'src/trainer/trainer.module';
 import { UserModule } from 'src/users/users.module';
-import { UserService } from 'src/users/users.service';
 import { Owners } from '../entities/owners.entity';
 import { OwnerController } from './owner.controller';
 import { OwnerService } from './owner.service';
@@ -15,6 +14,7 @@ import { OwnerService } from './owner.service';
     UserModule,
     TrainerModule,
     ClientModule,
+    MacrosModule,
   ],
   providers: [OwnerService],
   controllers: [OwnerController],

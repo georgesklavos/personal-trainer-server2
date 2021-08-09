@@ -1,4 +1,4 @@
-import { Exercise } from 'src/entities/exercise.entity';
+import { Exercises } from 'src/entities/exercises.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -6,8 +6,8 @@ export class CoolUpExercises {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Exercise, (exercise) => exercise.coolUpExercises)
-  exercise: Exercise;
+  @ManyToOne(() => Exercises, (exercise) => exercise.coolUpExercises)
+  exercise: Exercises;
 
   @Column({ type: 'varchar' })
   name: string;
