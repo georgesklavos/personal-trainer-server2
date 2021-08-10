@@ -12,20 +12,8 @@ export class OwnerService {
     private readonly ownersRepository: Repository<Owners>,
   ) {}
 
-  async createOwner(
-    user: Users,
-    phone: string,
-    clients: number,
-    trainers: number,
-    active: boolean,
-  ): Promise<Owners> {
-    const newOwner = await this.ownersRepository.create({
-      user,
-      phone,
-      clients,
-      trainers,
-      active,
-    });
+  async createOwner(ownerData: Owners): Promise<Owners> {
+    const newOwner = await this.ownersRepository.create(ownerData);
 
     await validate(newOwner).catch((errors) => {
       throw new HttpException(

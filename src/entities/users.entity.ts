@@ -24,7 +24,7 @@ export class Users {
   @Column({ type: 'varchar' })
   lastName: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, update: false })
   @IsEmail()
   email: string;
 
@@ -48,8 +48,14 @@ export class Users {
   @JoinColumn()
   language: Languages;
 
+  @Column({
+    name: 'roleId',
+    update: false,
+  })
   @ManyToOne(() => Roles)
-  @JoinColumn()
+  @JoinColumn({
+    name: 'roleId',
+  })
   role: Roles;
 
   @CreateDateColumn()

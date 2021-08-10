@@ -4,6 +4,8 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Param,
+  Patch,
   Post,
   Put,
   Request,
@@ -33,27 +35,14 @@ export class OwnerController {
   ) {}
   @UseInterceptors(UserInterceptor)
   @Post('signup')
-  async signup(@Body() body: Users & Owners) {
+  async signup(
+    @Body('user') userData: Users,
+    @Body('owner') ownerData: Owners,
+  ) {
     try {
-      const user = await this.userService.createUser(
-        body.firstName,
-        body.lastName,
-        body.email,
-        body.password,
-        body.currency,
-        body.gender,
-        body.systemType,
-        body.language,
-        body.role,
-      );
-
-      await this.ownerService.createOwner(
-        user,
-        body.phone,
-        body.clients,
-        body.trainers,
-        body.active,
-      );
+      const user = await this.userService.createUser(userData);
+      ownerData.user = user;
+      await this.ownerService.createOwner(ownerData);
       return user;
     } catch (err) {
       console.log(err);
@@ -69,33 +58,19 @@ export class OwnerController {
 
   @UseGuards(JwtAuthGaurd)
   @Put('trainer')
-  async createTraienr(@Request() req, @Body() body: Users & Trainers) {
+  async createTraienr(
+    @Request() req,
+    @Body('user') userData: Users,
+    @Body('traienr') traienrData: Trainers,
+  ) {
     // console.log(req.user);
     try {
-      const user = await this.userService.createUser(
-        body.firstName,
-        body.lastName,
-        body.email,
-        body.password,
-        body.currency,
-        body.gender,
-        body.systemType,
-        body.language,
-        body.role,
-      );
+      const user = await this.userService.createUser(userData);
       const owner = await this.ownerService.findOwnerByUserId(req.user.id);
 
-      await this.trainerService.createTrainer(
-        user,
-        owner,
-        body.age,
-        body.level,
-        body.active,
-        body.verifyPayments,
-        body.paymentNumber,
-        body.notes,
-        body.clientsNumber,
-      );
+      traienrData.user = user;
+      traienrData.owner = owner;
+      await this.trainerService.createTrainer(traienrData);
     } catch (err) {
       console.log(err);
       throw new HttpException(
@@ -110,40 +85,19 @@ export class OwnerController {
 
   @UseGuards(JwtAuthGaurd)
   @Put('client')
-  async createClient(@Request() req, @Body() body: Users & Clients) {
+  async createClient(
+    @Request() req,
+    @Body('user') userData: Users,
+    @Body('client') clientData: Clients,
+  ) {
     try {
-      const user = await this.userService.createUser(
-        body.firstName,
-        body.lastName,
-        body.email,
-        body.password,
-        body.currency,
-        body.gender,
-        body.systemType,
-        body.language,
-        body.role,
-      );
+      const user = await this.userService.createUser(userData);
       const owner = await this.ownerService.findOwnerByUserId(req.user.id);
+      clientData.user = user;
+      clientData.owner = owner;
+      await this.clientService.createClient(clientData);
 
-      await this.clientService.createClient(
-        user,
-        owner,
-        body.age,
-        body.level,
-        body.active,
-        body.payment,
-        body.program,
-        body.lastWeightNumber,
-        body.heightNumber,
-        body.target,
-        body.startDate,
-        body.endDate,
-        body.notes,
-        body.trainer,
-        body.viewedByTrainer,
-      );
-
-      await this.macrosService.createMacros(user, body.trainer);
+      await this.macrosService.createMacros(user, clientData.trainer);
     } catch (err) {
       console.log(err);
       throw new HttpException(
@@ -194,5 +148,33 @@ export class OwnerController {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  @Patch('client/:id')
+  async updateClient(
+    @Param() params,
+    @Body('user') user: Users,
+    @Body('client') client: Clients,
+  ) {
+    try {
+      if (user) {
+        this.userService.updateUser(params.id, user);
+      }
+
+      if (client) {
+        this.clientService.updateClient(params.id, client);
+      }
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'An error occured',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // this.clientService.
   }
 }

@@ -17,42 +17,10 @@ export class ClientService {
     private readonly clientsRepository: Repository<Clients>,
   ) {}
 
-  async createClient(
-    user: Users,
-    owner: Owners,
-    age: number,
-    level: Levels,
-    active: boolean,
-    payment: boolean,
-    program: Programs,
-    lastWeightNumber: number,
-    heightNumber: number,
-    target: Targets,
-    startDate: Date,
-    endDate: Date,
-    notes: string,
-    trainer: Trainers,
-    viewedByTrainer: boolean,
-  ): Promise<Clients> {
-    startDate = new Date(startDate);
-    endDate = new Date(endDate);
-    const newClient = await this.clientsRepository.create({
-      user,
-      owner,
-      age,
-      level,
-      active,
-      payment,
-      program,
-      lastWeightNumber,
-      heightNumber,
-      target,
-      startDate,
-      endDate,
-      notes,
-      trainer,
-      viewedByTrainer,
-    });
+  async createClient(clientData: Clients): Promise<Clients> {
+    clientData.startDate = new Date(clientData.startDate);
+    clientData.endDate = new Date(clientData.endDate);
+    const newClient = await this.clientsRepository.create(clientData);
 
     await validate(newClient).catch((errors) => {
       throw new HttpException(
@@ -79,5 +47,17 @@ export class ClientService {
       where: { trainer: trainerId },
       relations: ['user'],
     });
+  }
+
+  async updateClient(userId: Users, clientData) {
+    try {
+      const client = this.clientsRepository.update(
+        { user: userId },
+        clientData,
+      );
+      return client;
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

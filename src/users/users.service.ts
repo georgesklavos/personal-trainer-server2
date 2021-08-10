@@ -29,29 +29,9 @@ export class UserService {
     }
   }
 
-  async createUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    currency: number,
-    genderId: Genders,
-    systemType: Systems,
-    languageId: Languages,
-    roleId: Roles,
-  ): Promise<Users> {
-    password = await bcrypt.hash(password, 10);
-    const newUser = await this.usersRepository.create({
-      firstName,
-      lastName,
-      email,
-      password,
-      currency,
-      gender: genderId,
-      systemType,
-      language: languageId,
-      role: roleId,
-    });
+  async createUser(userData: Users): Promise<Users> {
+    userData.password = await bcrypt.hash(userData.password, 10);
+    const newUser = await this.usersRepository.create(userData);
 
     await validate(newUser).catch((errors) => {
       throw new HttpException(
@@ -73,19 +53,11 @@ export class UserService {
     return user;
   }
 
-  //   updateUser(
-  //     id: number,
-  //     email: string,
-  //     password: string,
-  //     systemType: number,
-  //     currency: number,
-  //     avatar: string,
-  //     role: number,
-  //   ): Promise<User> {
-  //     const user = this.getOneById(id);
+  async updateUser(id: number, userData: Users) {
+    // let user = await this.getOneById(id);
+    const user = await this.usersRepository.update({ id }, userData);
+    // user = { ...user, ...userData };
 
-  //     user.email = email;
-
-  //     return this.userRepository.save(user);
-  //   }
+    return user;
+  }
 }

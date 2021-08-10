@@ -14,28 +14,8 @@ export class TrainerService {
     private readonly trainersRepository: Repository<Trainers>,
   ) {}
 
-  async createTrainer(
-    user: Users,
-    owner: Owners,
-    age: number,
-    level: Levels,
-    active: boolean,
-    verifyPayments: boolean,
-    paymentNumber: number,
-    notes: string,
-    clientsNumber: number,
-  ): Promise<Trainers> {
-    const newTrainer = await this.trainersRepository.create({
-      user,
-      owner,
-      age,
-      level,
-      active,
-      verifyPayments,
-      paymentNumber,
-      notes,
-      clientsNumber,
-    });
+  async createTrainer(trainerData: Trainers): Promise<Trainers> {
+    const newTrainer = await this.trainersRepository.create(trainerData);
 
     await validate(newTrainer).catch((errros) => {
       throw new HttpException(
