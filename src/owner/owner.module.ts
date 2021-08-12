@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientModule } from 'src/client/clients.module';
+import { HelperTablesModule } from 'src/helper-tables/helper-tables.module';
 import { MacrosModule } from 'src/macros/macros.module';
 import { TrainerModule } from 'src/trainer/trainer.module';
 import { UserModule } from 'src/users/users.module';
@@ -15,6 +16,7 @@ import { OwnerService } from './owner.service';
     TrainerModule,
     ClientModule,
     MacrosModule,
+    HelperTablesModule,
   ],
   providers: [OwnerService],
   controllers: [OwnerController],

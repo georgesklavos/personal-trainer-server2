@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
-import { LoginInformationService } from './loginInformation/login-information.service';
+import { LoginInformationService } from './login-information/login-information.service';
 import { UserInterceptor } from './users/users.interceptor';
 import { UserService } from './users/users.service';
 

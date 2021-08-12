@@ -23,6 +23,7 @@ import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { Clients } from 'src/entities/clients.entity';
 import { ClientService } from 'src/client/clients.service';
 import { MacrosService } from 'src/macros/macros.service';
+import { HelperTablesService } from 'src/helper-tables/helper-tables.service';
 
 @Controller()
 export class OwnerController {
@@ -32,6 +33,7 @@ export class OwnerController {
     private readonly trainerService: TrainerService,
     private readonly clientService: ClientService,
     private readonly macrosService: MacrosService,
+    private readonly helperTablesService: HelperTablesService,
   ) {}
   @UseInterceptors(UserInterceptor)
   @Post('signup')
@@ -176,5 +178,48 @@ export class OwnerController {
     }
 
     // this.clientService.
+  }
+
+  @Patch('trainer/:id')
+  async updateTrainer(
+    @Param() params,
+    @Body('user') user: Users,
+    @Body('trainer') trainer: Trainers,
+  ) {
+    try {
+      if (user) {
+        this.userService.updateUser(params.id, user);
+      }
+
+      if (trainer) {
+        this.trainerService.updateTrainer(params.id, trainer);
+      }
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'An error occured',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // this.clientService.
+  }
+
+  @Get('helperTables')
+  async getHelperTables() {
+    try {
+      return await this.helperTablesService.getHelperTables();
+    } catch (err) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'An error occured',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

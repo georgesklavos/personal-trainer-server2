@@ -13,6 +13,7 @@ const ormconfig: ConnectionOptions = {
   entities: ['dist/**/*.entity.js'],
   migrationsTableName: 'migrations',
   migrations: ['dist/**/migrations/*.js'],
+  logging: false,
   synchronize: process.env.DB_SYNC == 'true' ? true : false,
   cli: {
     migrationsDir: 'src/migrations',

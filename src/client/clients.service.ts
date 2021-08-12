@@ -8,7 +8,7 @@ import { Programs } from 'src/entities/programs.entity';
 import { Targets } from 'src/entities/targets.entity';
 import { Trainers } from 'src/entities/trainers.entity';
 import { Users } from 'src/entities/users.entity';
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 
 @Injectable()
 export class ClientService {
@@ -46,10 +46,25 @@ export class ClientService {
     return await this.clientsRepository.find({
       where: { trainer: trainerId },
       relations: ['user'],
+      select: [
+        'user',
+        'owner',
+        'age',
+        'level',
+        'program',
+        'payment',
+        'lastWeightNumber',
+        'heightNumber',
+        'target',
+        'startDate',
+        'endDate',
+        'notes',
+        'viewedByTrainer',
+      ],
     });
   }
 
-  async updateClient(userId: Users, clientData) {
+  async updateClient(userId: Users, clientData: Clients) {
     try {
       const client = this.clientsRepository.update(
         { user: userId },
@@ -58,6 +73,23 @@ export class ClientService {
       return client;
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  async viewedByTrainer(user: Users) {
+    try {
+      return await this.clientsRepository.update(
+        { user },
+        { viewedByTrainer: true },
+      );
+    } catch (err) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Invalid client information',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

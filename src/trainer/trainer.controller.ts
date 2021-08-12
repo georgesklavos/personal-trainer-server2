@@ -30,6 +30,7 @@ export class TrainerController {
 
       return clients;
     } catch (err) {
+      console.log(err);
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,

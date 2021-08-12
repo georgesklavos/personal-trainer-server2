@@ -47,9 +47,6 @@ export class Trainers {
   @Column({ type: 'varchar' })
   notes: string;
 
-  @Column({ type: 'int' })
-  clientsNumber: number;
-
   @CreateDateColumn()
   created_at: Date;
 

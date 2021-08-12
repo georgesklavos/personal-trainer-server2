@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
-import { Levels } from 'src/entities/levels.entity';
 import { Owners } from 'src/entities/owners.entity';
 import { Trainers } from 'src/entities/trainers.entity';
 import { Users } from 'src/entities/users.entity';
@@ -41,5 +40,17 @@ export class TrainerService {
     const trainer = await this.trainersRepository.findOne({ user: userId });
 
     return trainer;
+  }
+
+  async updateTrainer(userId: Users, trainerData: Trainers) {
+    try {
+      const trainer = this.trainersRepository.update(
+        { user: userId },
+        trainerData,
+      );
+      return trainer;
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

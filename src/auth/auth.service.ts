@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, sub: user.id, role: user.role };
     this.Logger.log(`User with id "${payload.sub}" has been authorized`);
 
     return {
