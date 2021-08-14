@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -16,14 +17,17 @@ export class Days {
   id: number;
 
   @ManyToOne(() => Users)
+  @JoinColumn()
   user: Users;
 
   @Column({ type: 'date' })
   date: Date;
 
   @OneToOne(() => ClientsDay)
+  @JoinColumn()
   client: ClientsDay;
 
   @OneToOne(() => TrainersDay)
+  @JoinColumn()
   trainers: Trainers;
 }

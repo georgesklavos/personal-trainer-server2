@@ -15,6 +15,7 @@ import { PassportModule } from '@nestjs/passport';
 import * as ormconfig from '../ormconfig';
 import { LoginInformationModule } from './login-information/login-information.module';
 import { HelperTablesModule } from './helper-tables/helper-tables.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { HelperTablesModule } from './helper-tables/helper-tables.module';
     OwnerTrainerModule,
     LoginInformationModule,
     HelperTablesModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
