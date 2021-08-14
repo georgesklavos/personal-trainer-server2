@@ -16,6 +16,7 @@ import * as ormconfig from '../ormconfig';
 import { LoginInformationModule } from './login-information/login-information.module';
 import { HelperTablesModule } from './helper-tables/helper-tables.module';
 import { PaymentsModule } from './payments/payments.module';
+import { HowYouFeelModule } from './how-you-feel/how-you-feel.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { PaymentsModule } from './payments/payments.module';
     LoginInformationModule,
     HelperTablesModule,
     PaymentsModule,
+    HowYouFeelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,13 +1,13 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Users } from './users.entity';
+import { Clients } from './clients.entity';
 
 @Entity()
 export class HowYouFeel {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Users)
-  user: Users;
+  @ManyToOne(() => Clients)
+  client: Clients;
 
   @Column({ type: 'int' })
   rate: number;

@@ -17,6 +17,7 @@ export class Payments {
   @Column({
     name: 'userVerifiedId',
     nullable: true,
+    default: null,
   })
   @ManyToOne(() => Users)
   @JoinColumn()
@@ -29,7 +30,7 @@ export class Payments {
   @Column({ type: 'date' })
   dateClientPaid: Date;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'date', nullable: true, default: null })
   dateVerified: Date;
 
   @Column({ type: 'float' })
