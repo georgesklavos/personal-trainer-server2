@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   Req,
+  Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
@@ -33,13 +34,14 @@ export class OwnerTrainerController {
     private readonly paymentsServise: PaymentsService,
     private readonly howYouFeelService: HowYouFeelService,
   ) {}
-
+  private readonly Logger = new Logger(OwnerTrainerController.name);
   @UseGuards(JwtAuthGaurd)
   @Post('trainerViewed/:user')
   async viewedByTrainer(@Param() params) {
     await this.clientsService.viewedByTrainer(params.user);
     try {
     } catch (err) {
+      this.Logger.error(err);
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
@@ -60,7 +62,7 @@ export class OwnerTrainerController {
         params.year,
       );
     } catch (err) {
-      console.log(err);
+      this.Logger.error(err);
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
@@ -78,7 +80,7 @@ export class OwnerTrainerController {
       body.userVerified = req.user.id;
       await this.paymentsServise.verifyPayment(body);
     } catch (err) {
-      console.log(err);
+      this.Logger.error(err);
       throw new ErrorException();
     }
   }
@@ -90,7 +92,7 @@ export class OwnerTrainerController {
       //Gia na elegxw an o client anikei ston trainer i ston owner tha valoumme parametro sto jwt pou tha krataei to role
       return await this.howYouFeelService.getHowYouFeel(params);
     } catch (err) {
-      console.log(err);
+      this.Logger.error(err);
       throw new ErrorException();
     }
   }
