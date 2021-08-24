@@ -24,6 +24,8 @@ import { Clients } from 'src/entities/clients.entity';
 import { ClientService } from 'src/client/clients.service';
 import { MacrosService } from 'src/macros/macros.service';
 import { HelperTablesService } from 'src/helper-tables/helper-tables.service';
+import { trainerCreateUpdateDto } from './trainerCreateUpdate.dto';
+import { clientCreateUpdateDto } from './clientCreateUpdate.dto';
 
 @Controller()
 export class OwnerController {
@@ -60,19 +62,15 @@ export class OwnerController {
 
   @UseGuards(JwtAuthGaurd)
   @Put('trainer')
-  async createTraienr(
-    @Request() req,
-    @Body('user') userData: Users,
-    @Body('traienr') traienrData: Trainers,
-  ) {
+  async createTraienr(@Request() req, @Body() data: trainerCreateUpdateDto) {
     // console.log(req.user);
     try {
-      const user = await this.userService.createUser(userData);
+      const user = await this.userService.createUser(data.user);
       const owner = await this.ownerService.findOwnerByUserId(req.user.id);
 
-      traienrData.user = user;
-      traienrData.owner = owner;
-      await this.trainerService.createTrainer(traienrData);
+      data.trainer.user = user;
+      data.trainer.owner = owner;
+      await this.trainerService.createTrainer(data.trainer);
     } catch (err) {
       console.log(err);
       throw new HttpException(
@@ -87,19 +85,15 @@ export class OwnerController {
 
   @UseGuards(JwtAuthGaurd)
   @Put('client')
-  async createClient(
-    @Request() req,
-    @Body('user') userData: Users,
-    @Body('client') clientData: Clients,
-  ) {
+  async createClient(@Request() req, @Body() data: clientCreateUpdateDto) {
     try {
-      const user = await this.userService.createUser(userData);
+      const user = await this.userService.createUser(data.user);
       const owner = await this.ownerService.findOwnerByUserId(req.user.id);
-      clientData.user = user;
-      clientData.owner = owner;
-      await this.clientService.createClient(clientData);
+      data.client.user = user;
+      data.client.owner = owner;
+      await this.clientService.createClient(data.client);
 
-      await this.macrosService.createMacros(user, clientData.trainer);
+      await this.macrosService.createMacros(user, data.client.trainer);
     } catch (err) {
       console.log(err);
       throw new HttpException(
@@ -153,19 +147,11 @@ export class OwnerController {
   }
 
   @Patch('client/:id')
-  async updateClient(
-    @Param() params,
-    @Body('user') user: Users,
-    @Body('client') client: Clients,
-  ) {
+  async updateClient(@Param() params, @Body() data: clientCreateUpdateDto) {
     try {
-      if (user) {
-        this.userService.updateUser(params.id, user);
-      }
+      this.userService.updateUser(params.id, data.user);
 
-      if (client) {
-        this.clientService.updateClient(params.id, client);
-      }
+      this.clientService.updateClient(params.id, data.client);
     } catch (err) {
       console.log(err);
       throw new HttpException(
@@ -181,19 +167,11 @@ export class OwnerController {
   }
 
   @Patch('trainer/:id')
-  async updateTrainer(
-    @Param() params,
-    @Body('user') user: Users,
-    @Body('trainer') trainer: Trainers,
-  ) {
+  async updateTrainer(@Param() params, @Body() data: trainerCreateUpdateDto) {
     try {
-      if (user) {
-        this.userService.updateUser(params.id, user);
-      }
+      this.userService.updateUser(params.id, data.user);
 
-      if (trainer) {
-        this.trainerService.updateTrainer(params.id, trainer);
-      }
+      this.trainerService.updateTrainer(params.id, data.trainer);
     } catch (err) {
       console.log(err);
       throw new HttpException(

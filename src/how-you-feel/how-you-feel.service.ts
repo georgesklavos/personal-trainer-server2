@@ -11,6 +11,12 @@ export class HowYouFeelService {
     private readonly howYouFeelRepository: Repository<HowYouFeel>,
   ) {}
 
+  async createHowYouFeel(data: HowYouFeel) {
+    const newHowYouFeel = await this.howYouFeelRepository.create(data);
+
+    return (await this.howYouFeelRepository.save(newHowYouFeel)).id;
+  }
+
   async getHowYouFeel(data: HowYouFeelDto): Promise<HowYouFeel[]> {
     return await this.howYouFeelRepository.find({
       client: data.client,
