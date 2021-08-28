@@ -33,4 +33,8 @@ export class OwnerService {
 
     return owner;
   }
+
+  async getOwners(): Promise<Owners[]> {
+    return await this.ownersRepository.find({ relations: ['user'] });
+  }
 }

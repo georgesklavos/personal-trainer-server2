@@ -17,6 +17,8 @@ import { LoginInformationModule } from './login-information/login-information.mo
 import { HelperTablesModule } from './helper-tables/helper-tables.module';
 import { PaymentsModule } from './payments/payments.module';
 import { HowYouFeelModule } from './how-you-feel/how-you-feel.module';
+import { ExercisesModule } from './exercises/exercises.module';
+import { DaysModule } from './days/days.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { HowYouFeelModule } from './how-you-feel/how-you-feel.module';
     HelperTablesModule,
     PaymentsModule,
     HowYouFeelModule,
+    ExercisesModule,
+    DaysModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -27,7 +27,7 @@ export class Owners {
   @Column({ type: 'int' })
   trainers: number;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: true })
   active: boolean;
 
   @CreateDateColumn()

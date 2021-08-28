@@ -25,9 +25,9 @@ export class Days {
 
   @OneToOne(() => ClientsDay)
   @JoinColumn()
-  client: ClientsDay;
+  clientDay: ClientsDay;
 
   @OneToOne(() => TrainersDay)
   @JoinColumn()
-  trainers: Trainers;
+  trainerDay: Trainers;
 }

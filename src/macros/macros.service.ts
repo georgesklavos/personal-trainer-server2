@@ -18,7 +18,7 @@ export class MacrosService {
     private readonly macrosClientRepository: Repository<MacrosClient>,
   ) {}
 
-  async createMacros(user: Users, trainer: Trainers): Promise<Macros> {
+  async create(user: Users, trainer: Trainers): Promise<Macros> {
     try {
       let macros = await this.macrosRepository.create({ user, trainer });
 
@@ -46,5 +46,19 @@ export class MacrosService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  async update(macrosData: Macros) {
+    return await this.macrosRepository.update(
+      { user: macrosData.user },
+      macrosData,
+    );
+  }
+
+  async get(user) {
+    return await this.macrosRepository.findOne({
+      where: { user },
+      relations: ['macrosClient', 'macrosTrainer'],
+    });
   }
 }

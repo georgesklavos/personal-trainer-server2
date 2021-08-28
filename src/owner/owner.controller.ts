@@ -26,6 +26,7 @@ import { MacrosService } from 'src/macros/macros.service';
 import { HelperTablesService } from 'src/helper-tables/helper-tables.service';
 import { trainerCreateUpdateDto } from './trainerCreateUpdate.dto';
 import { clientCreateUpdateDto } from './clientCreateUpdate.dto';
+import { ownerCreateUpdateDto } from './ownerCreateUpdate.dto';
 
 @Controller()
 export class OwnerController {
@@ -39,14 +40,11 @@ export class OwnerController {
   ) {}
   @UseInterceptors(UserInterceptor)
   @Post('signup')
-  async signup(
-    @Body('user') userData: Users,
-    @Body('owner') ownerData: Owners,
-  ) {
+  async signup(@Body() data: ownerCreateUpdateDto) {
     try {
-      const user = await this.userService.createUser(userData);
-      ownerData.user = user;
-      await this.ownerService.createOwner(ownerData);
+      const user = await this.userService.createUser(data.user);
+      data.owner.user = user;
+      await this.ownerService.createOwner(data.owner);
       return user;
     } catch (err) {
       console.log(err);
@@ -93,7 +91,7 @@ export class OwnerController {
       data.client.owner = owner;
       await this.clientService.createClient(data.client);
 
-      await this.macrosService.createMacros(user, data.client.trainer);
+      await this.macrosService.create(user, data.client.trainer);
     } catch (err) {
       console.log(err);
       throw new HttpException(
@@ -189,7 +187,7 @@ export class OwnerController {
   @Get('helperTables')
   async getHelperTables() {
     try {
-      return await this.helperTablesService.getHelperTables();
+      return await this.helperTablesService.getHelperTables([]);
     } catch (err) {
       throw new HttpException(
         {

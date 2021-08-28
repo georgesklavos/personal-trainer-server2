@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Macros } from './macros.entity';
+import { Systems } from './systems.entity';
 
 @Entity()
 export class MacrosClient {
@@ -30,6 +32,16 @@ export class MacrosClient {
 
   @Column({ type: 'boolean', default: false })
   trainingDay: boolean;
+
+  @Column({
+    name: 'systemSavedId',
+    default: 1,
+  })
+  @ManyToOne(() => Systems)
+  @JoinColumn({
+    name: 'systemSavedId',
+  })
+  systemSaved: Systems;
 
   @CreateDateColumn()
   created_at: Date;

@@ -9,7 +9,7 @@ import { Programs } from 'src/entities/programs.entity';
 import { Roles } from 'src/entities/roles.entity';
 import { Systems } from 'src/entities/systems.entity';
 import { Targets } from 'src/entities/targets.entity';
-import { Entity, getConnection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class HelperTablesService {
@@ -33,27 +33,33 @@ export class HelperTablesService {
     @InjectRepository(Targets)
     private readonly targestRepository: Repository<Targets>,
   ) {}
-
-  async getHelperTables() {
-    const helperTablesToSeach = [
-      this.exerciseModesRepository,
-      this.exerciseOptionsRepository,
-      this.gendersRepository,
-      this.languagesRepository,
-      this.levelsRepository,
-      this.programsRepository,
-      this.rolesRepository,
-      this.systemsRepository,
-      this.targestRepository,
-    ];
+  helperTablesToSeach = [
+    this.exerciseModesRepository,
+    this.exerciseOptionsRepository,
+    this.gendersRepository,
+    this.languagesRepository,
+    this.levelsRepository,
+    this.programsRepository,
+    this.rolesRepository,
+    this.systemsRepository,
+    this.targestRepository,
+  ];
+  async getHelperTables(spesificHelperTables: Array<any>) {
     // eslint-disable-next-line prefer-const
     let helperTables = {};
-
-    await Promise.all(
-      helperTablesToSeach.map(async (el) => {
-        helperTables[el.metadata.tableName] = await el.find();
-      }),
-    );
+    if (spesificHelperTables.length > 0) {
+      await Promise.all(
+        spesificHelperTables.map(async (el) => {
+          helperTables[el.metadata.tableName] = await el.find();
+        }),
+      );
+    } else {
+      await Promise.all(
+        this.helperTablesToSeach.map(async (el) => {
+          helperTables[el.metadata.tableName] = await el.find();
+        }),
+      );
+    }
 
     return helperTables;
   }
