@@ -9,6 +9,7 @@ import {
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { ClientService } from 'src/client/clients.service';
 import { Clients } from 'src/entities/clients.entity';
+import { IsTrainer } from 'src/guards/isTrainer.guard';
 import { TrainerService } from './trainer.service';
 
 @Controller('trainer')
@@ -18,7 +19,7 @@ export class TrainerController {
     private readonly trainerService: TrainerService,
   ) {}
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsTrainer)
   @Get('clients')
   async getUsers(@Request() req): Promise<Clients[]> {
     try {

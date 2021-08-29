@@ -27,6 +27,7 @@ import { HelperTablesService } from 'src/helper-tables/helper-tables.service';
 import { trainerCreateUpdateDto } from './trainerCreateUpdate.dto';
 import { clientCreateUpdateDto } from './clientCreateUpdate.dto';
 import { ownerCreateUpdateDto } from './ownerCreateUpdate.dto';
+import { IsOwner } from 'src/guards/isOwner.guard';
 
 @Controller()
 export class OwnerController {
@@ -58,7 +59,7 @@ export class OwnerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwner)
   @Put('trainer')
   async createTraienr(@Request() req, @Body() data: trainerCreateUpdateDto) {
     // console.log(req.user);
@@ -81,7 +82,7 @@ export class OwnerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwner)
   @Put('client')
   async createClient(@Request() req, @Body() data: clientCreateUpdateDto) {
     try {
@@ -104,7 +105,7 @@ export class OwnerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwner)
   @Get('clients')
   async getClients(@Request() req): Promise<Clients[]> {
     try {
@@ -124,7 +125,7 @@ export class OwnerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwner)
   @Get('trainers')
   async getTrainers(@Request() req): Promise<Trainers[]> {
     try {
@@ -144,6 +145,7 @@ export class OwnerController {
     }
   }
 
+  @UseGuards(JwtAuthGaurd, IsOwner)
   @Patch('client/:id')
   async updateClient(@Param() params, @Body() data: clientCreateUpdateDto) {
     try {
@@ -164,6 +166,7 @@ export class OwnerController {
     // this.clientService.
   }
 
+  @UseGuards(JwtAuthGaurd, IsOwner)
   @Patch('trainer/:id')
   async updateTrainer(@Param() params, @Body() data: trainerCreateUpdateDto) {
     try {
@@ -184,6 +187,7 @@ export class OwnerController {
     // this.clientService.
   }
 
+  @UseGuards(JwtAuthGaurd, IsOwner)
   @Get('helperTables')
   async getHelperTables() {
     try {

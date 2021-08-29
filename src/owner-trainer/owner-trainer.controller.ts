@@ -12,15 +12,14 @@ import {
   Logger,
   Put,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { ClientService } from 'src/client/clients.service';
 import { DaysService } from 'src/days/days.service';
 import { HowYouFeel } from 'src/entities/HowYouFeel.entity';
 import { Macros } from 'src/entities/macros.entity';
-import { Users } from 'src/entities/users.entity';
 import { ExercisesService } from 'src/exercises/exercises.service';
 import { ErrorException } from 'src/filters/error.exceptions';
+import { IsOwnerOrIsTrainer } from 'src/guards/isOwnerOrIsTrainer.guard';
 import { HowYouFeelService } from 'src/how-you-feel/how-you-feel.service';
 import { HowYouFeelDto } from 'src/how-you-feel/howYouFeel.dto';
 import { MacrosService } from 'src/macros/macros.service';
@@ -41,7 +40,7 @@ export class OwnerTrainerController {
     private readonly daysService: DaysService,
   ) {}
   private readonly Logger = new Logger(OwnerTrainerController.name);
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Put('trainerViewed/:user')
   async viewedByTrainer(@Param() params) {
     await this.clientsService.viewedByTrainer(params.user);
@@ -58,7 +57,7 @@ export class OwnerTrainerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Get('payment/')
   async verifyPayment(@Query() params) {
     try {
@@ -79,7 +78,7 @@ export class OwnerTrainerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Put('verifyPayment/')
   async createPayment(@Body() body: VerifyPaymentDto, @Req() req) {
     try {
@@ -91,7 +90,7 @@ export class OwnerTrainerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Get('howYouFeel/')
   async getHowYouFeel(@Param() params: HowYouFeelDto): Promise<HowYouFeel[]> {
     try {
@@ -103,7 +102,7 @@ export class OwnerTrainerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Post('/day')
   async createDay(@Body() data: dayCreateDto) {
     try {
@@ -116,7 +115,7 @@ export class OwnerTrainerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Put('/day')
   async updateDay(@Body() data: dayCreateUpdateDto) {
     try {
@@ -128,7 +127,7 @@ export class OwnerTrainerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Get('/day/exercise')
   async getExercises(@Body() data: searchUserDateDto) {
     try {
@@ -139,9 +138,9 @@ export class OwnerTrainerController {
     }
   }
 
-  @UseGuards(JwtAuthGaurd)
+  @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Get('/day/macros')
-  async getMacros(@Body('user') user): Promise<Macros> {
+  async getMacros(@Req() req, @Body('user') user): Promise<Macros> {
     try {
       return this.macrosService.get(user);
     } catch (err) {
