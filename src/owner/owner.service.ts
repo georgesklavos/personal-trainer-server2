@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Owners } from '../entities/owners.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Users } from 'src/entities/users.entity';
 
 @Injectable()
@@ -36,5 +36,9 @@ export class OwnerService {
 
   async getOwners(): Promise<Owners[]> {
     return await this.ownersRepository.find({ relations: ['user'] });
+  }
+
+  async updateOwner(data: Owners): Promise<UpdateResult> {
+    return await this.ownersRepository.update({ user: data.user }, data);
   }
 }

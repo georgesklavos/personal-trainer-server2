@@ -64,10 +64,10 @@ export class ClientService {
     });
   }
 
-  async updateClient(userId: Users, clientData: Clients) {
+  async updateClient(clientData: Clients) {
     try {
       const client = this.clientsRepository.update(
-        { user: userId },
+        { user: clientData.user },
         clientData,
       );
       return client;

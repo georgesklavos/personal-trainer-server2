@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Users } from '../entities/users.entity';
 import * as bcrypt from 'bcrypt';
 import { validate } from 'class-validator';
@@ -53,9 +53,12 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: number, userData: Users) {
+  async updateUser(userData: Users): Promise<UpdateResult> {
     // let user = await this.getOneById(id);
-    const user = await this.usersRepository.update({ id }, userData);
+    const user = await this.usersRepository.update(
+      { id: userData.id },
+      userData,
+    );
     // user = { ...user, ...userData };
 
     return user;

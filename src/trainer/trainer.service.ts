@@ -42,10 +42,10 @@ export class TrainerService {
     return trainer;
   }
 
-  async updateTrainer(userId: Users, trainerData: Trainers) {
+  async updateTrainer(trainerData: Trainers) {
     try {
       const trainer = this.trainersRepository.update(
-        { user: userId },
+        { user: trainerData.user },
         trainerData,
       );
       return trainer;
