@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BasicCrud } from 'src/abstractClasses/basicCrudOperations';
 import { CoolUpExercises } from 'src/entities/coolUpExercises.entity';
 import { Exercises } from 'src/entities/exercises.entity';
 import { WarmUpExercises } from 'src/entities/warmUpExercises.entity';
@@ -9,7 +10,7 @@ import { searchUserDateDto } from 'src/owner-trainer/searchUserDate.dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class ExercisesService {
+export class ExercisesService extends BasicCrud {
   constructor(
     @InjectRepository(Exercises)
     private readonly exercisesRepository: Repository<Exercises>,
@@ -19,7 +20,9 @@ export class ExercisesService {
     private readonly workOutExercisesRepository: Repository<WorkoutExercises>,
     @InjectRepository(CoolUpExercises)
     private readonly coolUpExercisesRepository: Repository<CoolUpExercises>,
-  ) {}
+  ) {
+    super();
+  }
 
   async create(exerciseData: dayCreateDto) {
     exerciseData.exercise.date = new Date(exerciseData.exercise.date);
@@ -56,10 +59,14 @@ export class ExercisesService {
     );
   }
 
-  async findOne(data: searchUserDateDto): Promise<Exercises> {
+  async find(data: searchUserDateDto): Promise<Exercises> {
     return await this.exercisesRepository.findOne({
       user: data.user,
       date: data.date,
     });
+  }
+
+  delete() {
+    //nothing
   }
 }

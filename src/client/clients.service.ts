@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
+import { BasicCrud } from 'src/abstractClasses/basicCrudOperations';
 import { Clients } from 'src/entities/clients.entity';
 import { Levels } from 'src/entities/levels.entity';
 import { Owners } from 'src/entities/owners.entity';
@@ -11,13 +12,15 @@ import { Users } from 'src/entities/users.entity';
 import { getConnection, Repository } from 'typeorm';
 
 @Injectable()
-export class ClientService {
+export class ClientService extends BasicCrud {
   constructor(
     @InjectRepository(Clients)
     private readonly clientsRepository: Repository<Clients>,
-  ) {}
+  ) {
+    super();
+  }
 
-  async createClient(clientData: Clients): Promise<Clients> {
+  async create(clientData: Clients): Promise<Clients> {
     clientData.startDate = new Date(clientData.startDate);
     clientData.endDate = new Date(clientData.endDate);
     const newClient = await this.clientsRepository.create(clientData);
@@ -42,6 +45,10 @@ export class ClientService {
     });
   }
 
+  async getClientbyUser(user: Users): Promise<Clients> {
+    return await this.clientsRepository.findOne({ user });
+  }
+
   async getClientsTrainer(trainerId: Trainers): Promise<Clients[]> {
     return await this.clientsRepository.find({
       where: { trainer: trainerId },
@@ -64,7 +71,7 @@ export class ClientService {
     });
   }
 
-  async updateClient(clientData: Clients) {
+  async update(clientData: Clients) {
     try {
       const client = this.clientsRepository.update(
         { user: clientData.user },
@@ -91,5 +98,13 @@ export class ClientService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  find() {
+    console.log('est');
+  }
+
+  delete() {
+    console.log('delete');
   }
 }

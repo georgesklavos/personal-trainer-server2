@@ -3,4 +3,5 @@ export enum roles {
   Owner = 2,
   Trainer = 3,
   Client = 4,
+  Support = 5,
 }

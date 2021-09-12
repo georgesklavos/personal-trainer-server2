@@ -19,6 +19,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { HowYouFeelModule } from './how-you-feel/how-you-feel.module';
 import { ExercisesModule } from './exercises/exercises.module';
 import { DaysModule } from './days/days.module';
+import { SupportModule } from './support/support.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { DaysModule } from './days/days.module';
     HowYouFeelModule,
     ExercisesModule,
     DaysModule,
+    SupportModule,
   ],
   controllers: [AppController],
   providers: [AppService],

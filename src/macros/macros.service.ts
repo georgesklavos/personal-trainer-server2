@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { extend } from 'dayjs';
+import { BasicCrud } from 'src/abstractClasses/basicCrudOperations';
 import { Macros } from 'src/entities/macros.entity';
 import { MacrosClient } from 'src/entities/macrosClient.entity';
 import { MacrosTrainer } from 'src/entities/macrosTrainer.entity';
@@ -8,7 +10,7 @@ import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class MacrosService {
+export class MacrosService extends BasicCrud {
   constructor(
     @InjectRepository(Macros)
     private readonly macrosRepository: Repository<Macros>,
@@ -16,7 +18,9 @@ export class MacrosService {
     private readonly macrosTrainerRepository: Repository<MacrosTrainer>,
     @InjectRepository(MacrosClient)
     private readonly macrosClientRepository: Repository<MacrosClient>,
-  ) {}
+  ) {
+    super();
+  }
 
   async create(user: Users, trainer: Trainers): Promise<Macros> {
     try {
@@ -55,10 +59,14 @@ export class MacrosService {
     );
   }
 
-  async get(user) {
+  async find(user) {
     return await this.macrosRepository.findOne({
       where: { user },
       relations: ['macrosClient', 'macrosTrainer'],
     });
+  }
+
+  delete() {
+    //nothing
   }
 }

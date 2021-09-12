@@ -8,15 +8,18 @@ import { Systems } from 'src/entities/systems.entity';
 import { Languages } from 'src/entities/languages.entity';
 import { Genders } from 'src/entities/genders.entity';
 import { Roles } from 'src/entities/roles.entity';
+import { BasicCrud } from 'src/abstractClasses/basicCrudOperations';
 
 @Injectable()
-export class UserService {
+export class UserService extends BasicCrud {
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
-  ) {}
+  ) {
+    super();
+  }
 
-  getAll(): Promise<Users[]> {
+  find(): Promise<Users[]> {
     return this.usersRepository.find();
   }
 
@@ -29,7 +32,7 @@ export class UserService {
     }
   }
 
-  async createUser(userData: Users): Promise<Users> {
+  async create(userData: Users): Promise<Users> {
     userData.password = await bcrypt.hash(userData.password, 10);
     const newUser = await this.usersRepository.create(userData);
 
@@ -53,7 +56,7 @@ export class UserService {
     return user;
   }
 
-  async updateUser(userData: Users): Promise<UpdateResult> {
+  async update(userData: Users): Promise<UpdateResult> {
     // let user = await this.getOneById(id);
     const user = await this.usersRepository.update(
       { id: userData.id },
@@ -62,5 +65,9 @@ export class UserService {
     // user = { ...user, ...userData };
 
     return user;
+  }
+
+  delete() {
+    //nothing
   }
 }

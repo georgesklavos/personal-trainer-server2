@@ -1,19 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
+import { BasicCrud } from 'src/abstractClasses/basicCrudOperations';
 import { Owners } from 'src/entities/owners.entity';
 import { Trainers } from 'src/entities/trainers.entity';
 import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class TrainerService {
+export class TrainerService extends BasicCrud {
   constructor(
     @InjectRepository(Trainers)
     private readonly trainersRepository: Repository<Trainers>,
-  ) {}
+  ) {
+    super();
+  }
 
-  async createTrainer(trainerData: Trainers): Promise<Trainers> {
+  async create(trainerData: Trainers): Promise<Trainers> {
     const newTrainer = await this.trainersRepository.create(trainerData);
 
     await validate(newTrainer).catch((errros) => {
@@ -29,7 +32,7 @@ export class TrainerService {
     return await this.trainersRepository.save(newTrainer);
   }
 
-  async getTrainers(ownerId: Owners): Promise<Trainers[]> {
+  async find(ownerId: Owners): Promise<Trainers[]> {
     return await this.trainersRepository.find({
       where: { owner: ownerId },
       relations: ['user'],
@@ -42,7 +45,7 @@ export class TrainerService {
     return trainer;
   }
 
-  async updateTrainer(trainerData: Trainers) {
+  async update(trainerData: Trainers) {
     try {
       const trainer = this.trainersRepository.update(
         { user: trainerData.user },
@@ -52,5 +55,9 @@ export class TrainerService {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  delete() {
+    //nothing
   }
 }

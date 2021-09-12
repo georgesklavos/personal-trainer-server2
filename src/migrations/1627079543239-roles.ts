@@ -1,4 +1,4 @@
-import { rolesSeed } from 'src/seeds/roles.seed';
+import { roles } from 'src/seeds/roles.seed';
 import { getConnection, MigrationInterface, QueryRunner } from 'typeorm';
 
 export class roles1627079543239 implements MigrationInterface {
@@ -7,7 +7,7 @@ export class roles1627079543239 implements MigrationInterface {
       .createQueryBuilder()
       .insert()
       .into('roles')
-      .values(rolesSeed)
+      .values(roles)
       .execute();
   }
 
