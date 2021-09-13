@@ -95,7 +95,7 @@ export class OwnerTrainerController {
   async getHowYouFeel(@Param() params: HowYouFeelDto): Promise<HowYouFeel[]> {
     try {
       //Gia na elegxw an o client anikei ston trainer i ston owner tha valoumme parametro sto jwt pou tha krataei to role
-      return await this.howYouFeelService.getHowYouFeel(params);
+      return await this.howYouFeelService.find(params);
     } catch (err) {
       this.Logger.error(err);
       throw new ErrorException();
@@ -131,7 +131,7 @@ export class OwnerTrainerController {
   @Get('/day/exercise')
   async getExercises(@Body() data: searchUserDateDto) {
     try {
-      return await this.exerciseService.findOne(data);
+      return await this.exerciseService.find(data);
     } catch (err) {
       this.Logger.error(err);
       throw new ErrorException();
@@ -142,7 +142,7 @@ export class OwnerTrainerController {
   @Get('/day/macros')
   async getMacros(@Req() req, @Body('user') user): Promise<Macros> {
     try {
-      return this.macrosService.get(user);
+      return this.macrosService.find(user);
     } catch (err) {
       this.Logger.error(err);
       throw new ErrorException();

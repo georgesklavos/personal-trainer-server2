@@ -45,12 +45,12 @@ export class OwnerController {
   async createTraienr(@Request() req, @Body() data: trainerCreateUpdateDto) {
     // console.log(req.user);
     try {
-      const user = await this.userService.createUser(data.user);
+      const user = await this.userService.create(data.user);
       const owner = await this.ownerService.findOwnerByUserId(req.user.id);
 
       data.trainer.user = user;
       data.trainer.owner = owner;
-      await this.trainerService.createTrainer(data.trainer);
+      await this.trainerService.create(data.trainer);
     } catch (err) {
       console.log(err);
       throw new HttpException(
@@ -67,11 +67,11 @@ export class OwnerController {
   @Put('client')
   async createClient(@Request() req, @Body() data: clientCreateUpdateDto) {
     try {
-      const user = await this.userService.createUser(data.user);
+      const user = await this.userService.create(data.user);
       const owner = await this.ownerService.findOwnerByUserId(req.user.id);
       data.client.user = user;
       data.client.owner = owner;
-      await this.clientService.createClient(data.client);
+      await this.clientService.create(data.client);
 
       await this.macrosService.create(user, data.client.trainer);
     } catch (err) {
@@ -112,7 +112,7 @@ export class OwnerController {
     try {
       const owner = await this.ownerService.findOwnerByUserId(req.user.id);
 
-      const trainers = await this.trainerService.getTrainers(owner);
+      const trainers = await this.trainerService.find(owner);
 
       return trainers;
     } catch (err) {
@@ -130,9 +130,9 @@ export class OwnerController {
   @Patch('client/:id')
   async updateClient(@Param() params, @Body() data: clientCreateUpdateDto) {
     try {
-      this.userService.updateUser(params.id, data.user);
+      this.userService.update(data.user);
 
-      this.clientService.updateClient(params.id, data.client);
+      this.clientService.update(data.client);
     } catch (err) {
       console.log(err);
       throw new HttpException(
@@ -151,9 +151,9 @@ export class OwnerController {
   @Patch('trainer/:id')
   async updateTrainer(@Param() params, @Body() data: trainerCreateUpdateDto) {
     try {
-      this.userService.updateUser(params.id, data.user);
+      this.userService.update(data.user);
 
-      this.trainerService.updateTrainer(params.id, data.trainer);
+      this.trainerService.update(data.trainer);
     } catch (err) {
       console.log(err);
       throw new HttpException(

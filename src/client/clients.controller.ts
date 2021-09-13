@@ -12,6 +12,6 @@ export class ClientController {
   @UseGuards(JwtAuthGaurd, IsClient)
   @Put('/api/rate')
   async createHowYouFeel(@Body() data: HowYouFeel) {
-    return await this.howYouFeelService.createHowYouFeel(data);
+    return await this.howYouFeelService.create(data);
   }
 }

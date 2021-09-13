@@ -11,9 +11,17 @@ import {
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
+import { ClientService } from './client/clients.service';
+import { Clients } from './entities/clients.entity';
+import { Owners } from './entities/owners.entity';
+import { Trainers } from './entities/trainers.entity';
+import { ErrorException } from './filters/error.exceptions';
 import { LoginInformationService } from './login-information/login-information.service';
 import { OwnerService } from './owner/owner.service';
 import { ownerCreateUpdateDto } from './owner/ownerCreateUpdate.dto';
+import { roles } from './seeds/roles.seed';
+import { TrainerService } from './trainer/trainer.service';
+import { updateProfileDto } from './users/updateProfile.dto';
 import { UserInterceptor } from './users/users.interceptor';
 import { UserService } from './users/users.service';
 
@@ -25,15 +33,17 @@ export class AppController {
     private readonly authService: AuthService,
     private readonly ownerService: OwnerService,
     private readonly loginInformationService: LoginInformationService,
+    private readonly trainerService: TrainerService,
+    private readonly clientService: ClientService,
   ) {}
 
   @UseInterceptors(UserInterceptor)
   @Post('signup')
   async signup(@Body() data: ownerCreateUpdateDto) {
     try {
-      const user = await this.userService.createUser(data.user);
+      const user = await this.userService.create(data.user);
       data.owner.user = user;
-      await this.ownerService.createOwner(data.owner);
+      await this.ownerService.create(data.owner);
       return user;
     } catch (err) {
       console.log(err);
@@ -57,5 +67,35 @@ export class AppController {
     //   device: req.headers['user-agent'],
     // });
     return this.authService.login(req.user);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Put('update')
+  updateProfile(@Request() req, @Body() body: updateProfileDto) {
+    try {
+      if (req.user.id != body.user.id) {
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'Invalid user',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      this.userService.update(body.user);
+      switch (body.user.role.id) {
+        case roles.Owner:
+          this.ownerService.update(body.role as Owners);
+          break;
+        case roles.Trainer:
+          this.trainerService.update(body.role as Trainers);
+          break;
+        case roles.Client:
+          this.clientService.update(body.role as Clients);
+          break;
+      }
+    } catch (err) {
+      throw new ErrorException();
+    }
   }
 }

@@ -23,41 +23,4 @@ import { updateProfileDto } from './updateProfile.dto';
 import { UserService } from './users.service';
 
 @Controller()
-export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly trainerService: TrainerService,
-    private readonly ownerService: OwnerService,
-    private readonly clientService: ClientService,
-  ) {}
-
-  @UseGuards(LocalAuthGuard)
-  @Put('update')
-  updateProfile(@Request() req, @Body() body: updateProfileDto) {
-    try {
-      if (req.user.id != body.user.id) {
-        throw new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Invalid user',
-          },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-      this.userService.updateUser(body.user);
-      switch (body.user.role.id) {
-        case roles.Owner:
-          this.ownerService.updateOwner(body.role as Owners);
-          break;
-        case roles.Trainer:
-          this.trainerService.updateTrainer(body.role as Trainers);
-          break;
-        case roles.Client:
-          this.clientService.updateClient(body.role as Clients);
-          break;
-      }
-    } catch (err) {
-      throw new ErrorException();
-    }
-  }
-}
+export class UserController {}
