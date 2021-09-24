@@ -7,19 +7,26 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { SupportChats } from './supportChats.entity';
+import { Users } from './users.entity';
 
 @Entity()
-export class Messages {
+export class Videos {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @ManyToOne(() => SupportChats)
-  @JoinColumn()
-  chat: SupportChats;
+  @Column({ type: 'boolean' })
+  enabled: boolean;
 
-  @Column({ type: 'varchar' })
-  message: string;
+  @Column({ type: 'double' })
+  size: number;
+
+  @ManyToOne(() => Users)
+  @JoinColumn()
+  reviewer: Users;
+
+  @ManyToOne(() => Users)
+  @JoinColumn()
+  user: Users;
 
   @CreateDateColumn()
   created_at: Date;

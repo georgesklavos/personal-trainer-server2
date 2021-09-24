@@ -23,7 +23,7 @@ export class UserService extends BasicCrud {
     return this.usersRepository.find();
   }
 
-  async getOneById(id: number): Promise<Users> {
+  async getOneById(id: Users): Promise<Users> {
     try {
       const user = await this.usersRepository.findOneOrFail(id);
       return user;
