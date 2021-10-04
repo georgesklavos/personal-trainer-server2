@@ -1,4 +1,5 @@
 import { Body, Controller, Put, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { HowYouFeel } from 'src/entities/HowYouFeel.entity';
@@ -9,6 +10,7 @@ import { HowYouFeelService } from 'src/how-you-feel/how-you-feel.service';
 export class ClientController {
   constructor(private readonly howYouFeelService: HowYouFeelService) {}
 
+  @ApiTags('Client')
   @UseGuards(JwtAuthGaurd, IsClient)
   @Put('/api/rate')
   async createHowYouFeel(@Body() data: HowYouFeel) {

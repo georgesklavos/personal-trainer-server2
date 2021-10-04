@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BasicCrud } from 'src/abstractClasses/basicCrudOperations';
 import { CoolUpExercises } from 'src/entities/coolUpExercises.entity';
@@ -8,6 +8,12 @@ import { WorkoutExercises } from 'src/entities/workoutExercises.entity';
 import { dayCreateDto } from 'src/owner-trainer/dayCreate.dto';
 import { searchUserDateDto } from 'src/owner-trainer/searchUserDate.dto';
 import { Repository } from 'typeorm';
+import Pusher from 'pusher';
+import { Clients } from 'src/entities/clients.entity';
+import { ClientService } from 'src/client/clients.service';
+import { UserService } from 'src/users/users.service';
+import { roles } from 'src/seeds/roles.seed';
+import { Request } from 'express';
 
 @Injectable()
 export class ExercisesService extends BasicCrud {
@@ -20,6 +26,8 @@ export class ExercisesService extends BasicCrud {
     private readonly workOutExercisesRepository: Repository<WorkoutExercises>,
     @InjectRepository(CoolUpExercises)
     private readonly coolUpExercisesRepository: Repository<CoolUpExercises>,
+    private readonly clientsService: ClientService,
+    private readonly usersService: UserService,
   ) {
     super();
   }
@@ -48,25 +56,46 @@ export class ExercisesService extends BasicCrud {
       const newCoolUp = this.coolUpExercisesRepository.create(coolUp);
       this.coolUpExercisesRepository.save(newCoolUp);
     }
+    const takeExercise = {
+      user: exerciseData.user,
+      date: exerciseData.exercise.date,
+    };
 
-    return;
+    return await this.find(takeExercise);
   }
 
   async update(exerciseData: Exercises) {
-    return await this.exercisesRepository.update(
+    const exercise = await this.exercisesRepository.update(
       { user: exerciseData.user, date: exerciseData.date },
       exerciseData,
     );
+
+    const client = await this.clientsService.getClientbyUser(exerciseData.user);
+    this.alertTrainer(client);
+    return exercise;
   }
 
   async find(data: searchUserDateDto): Promise<Exercises> {
     return await this.exercisesRepository.findOne({
-      user: data.user,
-      date: data.date,
+      where: { user: data.user, date: data.date },
+      relations: ['warmUpExercises', 'workoutExercises', 'coolUpExercises'],
     });
   }
 
   delete() {
     //nothing
+  }
+
+  alertTrainer(client: Clients) {
+    const pusherConnection = new Pusher({
+      appId: `${process.env.PUSHER_APPID}`,
+      key: `${process.env.PUSHER_KEY}`,
+      secret: `${process.env.PUSHER_SECRET}`,
+      cluster: `${process.env.PUSHER_CLUSTER}`,
+    });
+
+    pusherConnection.trigger('users', `updateDay-${client.trainer}`, {
+      user: client.user,
+    });
   }
 }

@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
 import { ClientService } from './client/clients.service';
@@ -37,6 +38,7 @@ export class AppController {
     private readonly clientService: ClientService,
   ) {}
 
+  @ApiTags('Athentication')
   @UseInterceptors(UserInterceptor)
   @Post('signup')
   async signup(@Body() data: ownerCreateUpdateDto) {
@@ -57,6 +59,7 @@ export class AppController {
     }
   }
 
+  @ApiTags('Athentication')
   //Vale tin diadikasia twn ips se allo service
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -69,6 +72,7 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
+  @ApiTags('Mutual')
   @UseGuards(LocalAuthGuard)
   @Put('update')
   updateProfile(@Request() req, @Body() body: updateProfileDto) {

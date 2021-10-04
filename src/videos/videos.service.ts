@@ -14,6 +14,7 @@ export class VideosService extends BasicCrud {
   }
 
   async create(data) {
+    //vres to relation pou tha ginei me ta exercises
     await this.videosRepository.create(data);
   }
 

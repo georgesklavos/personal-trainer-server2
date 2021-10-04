@@ -6,12 +6,11 @@ import {
   HttpStatus,
   Logger,
   Post,
-  Put,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
-import { Owners } from 'src/entities/owners.entity';
 import { Users } from 'src/entities/users.entity';
 import { ErrorException } from 'src/filters/error.exceptions';
 import { IsAdmin } from 'src/guards/isAdmin.guard';
@@ -33,6 +32,7 @@ export class AdminController {
   ) {}
   private readonly Logger = new Logger(AdminController.name);
 
+  @ApiTags('Admin')
   @UseInterceptors(UserInterceptor)
   @Post('/createUser')
   async createUser(@Body() data: ownerCreateUpdateDto) {
@@ -55,6 +55,8 @@ export class AdminController {
       );
     }
   }
+
+  @ApiTags('Admin')
   // Create in the app controller update api for all the roles but the same api and change the data for each role
   @UseGuards(JwtAuthGaurd, IsAdmin)
   @Get('/getUsers')
@@ -69,6 +71,7 @@ export class AdminController {
     }
   }
 
+  @ApiTags('Admin')
   @UseGuards(JwtAuthGaurd, IsAdmin)
   @Get('/roleInfo')
   async getRoleInfo(@Body() data: Users) {

@@ -8,6 +8,7 @@ import { roles } from 'src/seeds/roles.seed';
 import { UserService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { createChatDto } from './createChat.dto';
+import { getMessagesDto } from './getMessages.dto';
 
 @Injectable()
 export class MessagesService extends BasicCrud {
@@ -22,28 +23,8 @@ export class MessagesService extends BasicCrud {
   }
 
   async create(data: createChatDto): Promise<number> {
-    const supportUser = await this.usersService.getOneById(data.supportUser);
-
-    if (supportUser.role.id != roles.Support) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'Invalid support user',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    const user = await this.usersService.getOneById(data.user);
-    if (user.role.id != roles.Client) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'Invalid client',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    this.usersService.checkRole(data.supportUser, [roles.Support]);
+    this.usersService.checkRole(data.user, [roles.Client]);
 
     return await this.supportChatsRepository.create(data).id;
   }
@@ -52,11 +33,44 @@ export class MessagesService extends BasicCrud {
     //nothing
   }
 
+  async findChatsBySupportUser(supportUser: Users): Promise<SupportChats[]> {
+    this.usersService.checkRole(supportUser, [roles.Support]);
+
+    return await this.supportChatsRepository.find({ where: { supportUser } });
+  }
+
+  async findChatsByUser(user: Users): Promise<SupportChats[]> {
+    this.usersService.checkRole(user, [roles.Support]);
+
+    return await this.supportChatsRepository.find({ where: { user } });
+  }
+
+  async getMessages(data: getMessagesDto): Promise<Messages[]> {
+    const chatData = await this.supportChatsRepository.findOne({
+      where: { id: data.chat.id },
+    });
+
+    if (chatData.user != data.user && chatData.supportUser != data.user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Invalid user in chat',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return await this.messagesRepository.find({
+      select: ['message', 'created_at'],
+      order: { created_at: 'DESC' },
+    });
+  }
+
   update() {
     //nothing
   }
 
-  delete() {
-    //nothing
+  delete(messageId: Messages) {
+    this.messagesRepository.delete({ id: messageId.id, deleted: false });
   }
 }

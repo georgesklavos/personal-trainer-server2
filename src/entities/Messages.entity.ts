@@ -21,6 +21,9 @@ export class Messages {
   @Column({ type: 'varchar' })
   message: string;
 
+  @Column({type: 'boolean'})
+  deleted: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 

@@ -5,9 +5,13 @@ import { SupportChats } from 'src/entities/supportChats.entity';
 import { SupportService } from './support.service';
 import { SupportController } from './support.controller';
 import { Users } from 'src/entities/users.entity';
+import { MessagesModule } from 'src/messages/messages.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Messages, SupportChats, Users])],
+  imports: [
+    TypeOrmModule.forFeature([Messages, SupportChats, Users]),
+    MessagesModule,
+  ],
   providers: [SupportService],
   controllers: [SupportController],
 })

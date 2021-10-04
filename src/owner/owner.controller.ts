@@ -28,6 +28,7 @@ import { trainerCreateUpdateDto } from './trainerCreateUpdate.dto';
 import { clientCreateUpdateDto } from './clientCreateUpdate.dto';
 import { ownerCreateUpdateDto } from './ownerCreateUpdate.dto';
 import { IsOwner } from 'src/guards/isOwner.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
 export class OwnerController {
@@ -40,6 +41,7 @@ export class OwnerController {
     private readonly helperTablesService: HelperTablesService,
   ) {}
 
+  @ApiTags('Owner')
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Put('trainer')
   async createTraienr(@Request() req, @Body() data: trainerCreateUpdateDto) {
@@ -63,6 +65,7 @@ export class OwnerController {
     }
   }
 
+  @ApiTags('Owner')
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Put('client')
   async createClient(@Request() req, @Body() data: clientCreateUpdateDto) {
@@ -86,6 +89,7 @@ export class OwnerController {
     }
   }
 
+  @ApiTags('Owner')
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Get('clients')
   async getClients(@Request() req): Promise<Clients[]> {
@@ -106,6 +110,7 @@ export class OwnerController {
     }
   }
 
+  @ApiTags('Owner')
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Get('trainers')
   async getTrainers(@Request() req): Promise<Trainers[]> {
@@ -126,6 +131,7 @@ export class OwnerController {
     }
   }
 
+  @ApiTags('Owner')
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Patch('client/:id')
   async updateClient(@Param() params, @Body() data: clientCreateUpdateDto) {
@@ -147,6 +153,7 @@ export class OwnerController {
     // this.clientService.
   }
 
+  @ApiTags('Owner')
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Patch('trainer/:id')
   async updateTrainer(@Param() params, @Body() data: trainerCreateUpdateDto) {
@@ -168,6 +175,7 @@ export class OwnerController {
     // this.clientService.
   }
 
+  @ApiTags('Owner')
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Get('helperTables')
   async getHelperTables() {

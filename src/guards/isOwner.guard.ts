@@ -1,5 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { roles } from 'src/seeds/roles.seed';
 
 @Injectable()
 export class IsOwner implements CanActivate {
@@ -7,7 +8,7 @@ export class IsOwner implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    if (request.user.role != 2) {
+    if (request.user.role != roles.Owner) {
       return false;
     }
     return true;

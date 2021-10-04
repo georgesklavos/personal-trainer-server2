@@ -4,6 +4,8 @@ import { Messages } from 'src/entities/Messages.entity';
 import { Roles } from 'src/entities/roles.entity';
 import { SupportChats } from 'src/entities/supportChats.entity';
 import { Users } from 'src/entities/users.entity';
+import { getMessagesDto } from 'src/messages/getMessages.dto';
+import { MessagesService } from 'src/messages/messages.service';
 import { roles } from 'src/seeds/roles.seed';
 import { Repository } from 'typeorm';
 
@@ -16,6 +18,7 @@ export class SupportService {
     private readonly supportChatsRepository: Repository<SupportChats>,
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
+    private readonly messagesService: MessagesService,
   ) {}
 
   async create(data) {
@@ -41,13 +44,14 @@ export class SupportService {
     return await this.supportChatsRepository.find({ supportUser });
   }
 
-  async getMessages(data) {
-    return this.messagesRepository
-      .createQueryBuilder('chatRoom')
-      .where('chatRoom.chat = :id', { id: data })
-      .orderBy('chatRoom.created_at', 'DESC')
-      .limit(10)
-      .skip(data.skip)
-      .execute();
+  async getMessages(data: getMessagesDto) {
+    return await this.messagesService.getMessages(data);
+    // return this.messagesRepository
+    //   .createQueryBuilder('chatRoom')
+    //   .where('chatRoom.chat = :id', { id: data })
+    //   .orderBy('chatRoom.created_at', 'DESC')
+    //   .limit(10)
+    //   .skip(data.skip)
+    //   .execute();
   }
 }

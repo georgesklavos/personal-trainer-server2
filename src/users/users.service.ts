@@ -67,6 +67,22 @@ export class UserService extends BasicCrud {
     return user;
   }
 
+  async checkRole(user: Users, roles: [number]) {
+    const userData = await this.usersRepository.findOne({
+      where: { id: user },
+    });
+
+    if (!roles.includes(userData.role.id)) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'Invalid role',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+  }
+
   delete() {
     //nothing
   }
