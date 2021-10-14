@@ -17,6 +17,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { ClientService } from 'src/client/clients.service';
 import { DaysService } from 'src/days/days.service';
+import { EmailModule } from 'src/email/email.module';
+import { EmailService } from 'src/email/email.service';
 import { HowYouFeel } from 'src/entities/HowYouFeel.entity';
 import { Macros } from 'src/entities/macros.entity';
 import { ExercisesService } from 'src/exercises/exercises.service';
@@ -120,7 +122,7 @@ export class OwnerTrainerController {
       this.usersService.checkRole(req.user, [roles.Trainer]);
       await this.macrosService.create(data.user, data.trainer);
       await this.exerciseService.create(data);
-      await this.daysService.create(data.user, data.exercise.date);
+      // await this.daysService.create(data.user, data.day.date);
     } catch (err) {
       this.Logger.error(err);
       throw new ErrorException();

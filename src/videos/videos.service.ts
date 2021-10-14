@@ -29,4 +29,11 @@ export class VideosService extends BasicCrud {
   async delete() {
     //nothing
   }
+
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(mp4)$/)) {
+      return cb(new Error('Only mp4 files are accepted'), null);
+    }
+    cb(null, true);
+  }
 }

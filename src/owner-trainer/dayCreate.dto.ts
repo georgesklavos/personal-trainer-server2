@@ -1,5 +1,6 @@
 import { isDefined, IsDefined } from 'class-validator';
 import { CoolUpExercises } from 'src/entities/coolUpExercises.entity';
+import { ExerciseModes } from 'src/entities/exerciseModes.entity';
 import { Exercises } from 'src/entities/exercises.entity';
 import { Trainers } from 'src/entities/trainers.entity';
 import { Users } from 'src/entities/users.entity';
@@ -11,8 +12,11 @@ export class dayCreateDto {
   user: Users;
   @IsDefined()
   trainer: Trainers;
-  @IsDefined()
   exercise: Exercises;
+  @IsDefined()
+  date: Date;
+  @IsDefined()
+  exerciseMode: ExerciseModes;
   @IsDefined()
   warmUpExercises: WarmUpExercises[];
   @IsDefined()

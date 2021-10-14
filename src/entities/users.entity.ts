@@ -58,6 +58,12 @@ export class Users {
   })
   role: Roles;
 
+  @Column({ type: 'boolean', default: false })
+  emailVerified: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  passwordVerified: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 

@@ -12,7 +12,9 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
+import { JwtAuthGaurd } from './auth/jwt.auth.gaurd';
 import { ClientService } from './client/clients.service';
+import { EmailService } from './email/email.service';
 import { Clients } from './entities/clients.entity';
 import { Owners } from './entities/owners.entity';
 import { Trainers } from './entities/trainers.entity';
@@ -36,6 +38,7 @@ export class AppController {
     private readonly loginInformationService: LoginInformationService,
     private readonly trainerService: TrainerService,
     private readonly clientService: ClientService,
+    private readonly emailsService: EmailService,
   ) {}
 
   @ApiTags('Athentication')
@@ -101,5 +104,11 @@ export class AppController {
     } catch (err) {
       throw new ErrorException();
     }
+  }
+
+  @Post('verifyEmail')
+  @UseGuards(JwtAuthGaurd)
+  async sendEmail(@Request() req) {
+    this.emailsService.sendVerifyEmail(req.user);
   }
 }

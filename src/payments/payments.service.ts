@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as dayjs from 'dayjs';
-import { connection } from 'mongoose';
 import { ClientService } from 'src/client/clients.service';
 import { Clients } from 'src/entities/clients.entity';
 import { Payments } from 'src/entities/Payments.entity';

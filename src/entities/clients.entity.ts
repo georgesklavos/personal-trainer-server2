@@ -64,6 +64,12 @@ export class Clients {
   @Column({ type: 'date' })
   endDate: Date;
 
+  @Column({ type: 'boolean', default: false })
+  equipment: boolean;
+
+  @Column({ type: 'int' })
+  daysPerWeek: number;
+
   @Column({ type: 'varchar' })
   notes: string;
 

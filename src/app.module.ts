@@ -23,11 +23,14 @@ import { SupportModule } from './support/support.module';
 import { LoggerRequestsMiddleware } from './middleware/requests.middleware';
 import { VideosModule } from './videos/videos.module';
 import { MessagesModule } from './messages/messages.module';
+import { EmailModule } from './email/email.module';
+import { TranslationsModule } from './translations/translations.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
-    TypeOrmModule.forRoot(ormconfig),
+    TypeOrmModule.forRoot(ormconfig.ormconfigMongoDB),
+    TypeOrmModule.forRoot(ormconfig.ormconfigMySQL),
     AuthModule,
     OwnerModule,
     UserModule,
@@ -46,6 +49,8 @@ import { MessagesModule } from './messages/messages.module';
     SupportModule,
     VideosModule,
     MessagesModule,
+    EmailModule,
+    TranslationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

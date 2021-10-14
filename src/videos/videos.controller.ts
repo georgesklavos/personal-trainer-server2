@@ -1,5 +1,7 @@
 import {
   Controller,
+  HttpException,
+  HttpStatus,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -15,14 +17,24 @@ export class VideosController {
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {
+      limits: {
+        fileSize: 6000000,
+      },
+      fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(mp4)$/)) {
+          return cb(
+            new HttpException(
+              'Only mp4 files are accepted',
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+        cb(null, true);
+      },
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          // Generating a 32 random chars long string
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
           //Calling the callback passing the random name generated with the original extension name
           cb(null, file.originalname);
         },

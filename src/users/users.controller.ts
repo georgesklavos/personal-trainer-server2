@@ -8,9 +8,12 @@ import {
   HttpStatus,
   UseInterceptors,
   Put,
+  Req,
 } from '@nestjs/common';
+import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
 import { ClientService } from 'src/client/clients.service';
+import { EmailService } from 'src/email/email.service';
 import { Clients } from 'src/entities/clients.entity';
 import { Owners } from 'src/entities/owners.entity';
 import { Roles } from 'src/entities/roles.entity';

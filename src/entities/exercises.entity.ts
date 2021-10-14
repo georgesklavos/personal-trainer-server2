@@ -2,12 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { CoolUpExercises } from './coolUpExercises.entity';
+import { Days } from './Days.entity';
 import { ExerciseModes } from './exerciseModes.entity';
 import { Users } from './users.entity';
 import { WarmUpExercises } from './warmUpExercises.entity';
@@ -19,30 +22,39 @@ export class Exercises {
   id: number;
 
   @ManyToOne(() => Users)
+  @JoinColumn()
   user: Users;
 
-  @Column({ type: 'date' })
+  @OneToOne(() => Days, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  day: Days;
+
+  @Column()
   date: Date;
 
   @ManyToOne(() => ExerciseModes)
+  @JoinColumn()
   exerciseMode: ExerciseModes;
 
   @OneToMany(
     () => WarmUpExercises,
     (warmUpExercises) => warmUpExercises.exercise,
   )
+  @JoinColumn()
   warmUpExercises: WarmUpExercises[];
 
   @OneToMany(
     () => WorkoutExercises,
     (workoutExercises) => workoutExercises.exercise,
   )
+  @JoinColumn()
   workoutExercises: WorkoutExercises[];
 
   @OneToMany(
     () => CoolUpExercises,
     (coolUpExercises) => coolUpExercises.exercise,
   )
+  @JoinColumn()
   coolUpExercises: CoolUpExercises[];
 
   @CreateDateColumn()
