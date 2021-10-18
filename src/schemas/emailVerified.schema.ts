@@ -1,17 +1,25 @@
-import { ObjectId } from 'mongodb';
-import { Column, Entity, ObjectIdColumn } from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
+import { Document } from 'mongoose';
 
-@Entity()
+export type EmailVerifiedDocument = EmailVerified & Document;
+
+@Schema({ timestamps: true })
 export class EmailVerified {
-  @ObjectIdColumn()
-  id: ObjectId;
-
-  @Column()
+  @IsString()
+  @IsNotEmpty()
+  @Prop({ required: true })
   title: string;
 
-  @Column()
+  @IsString()
+  @IsNotEmpty()
+  @Prop({ required: true })
   description: string;
 
-  @Column()
+  @IsString()
+  @IsNotEmpty()
+  @Prop({ required: true })
   languageId: number;
 }
+
+export const EmailVerifiedSchema = SchemaFactory.createForClass(EmailVerified);

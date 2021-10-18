@@ -9,11 +9,15 @@ import { EmailService } from './email.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([LoginKeys, ResetPasswordKeys]),
-    TypeOrmModule.forFeature([EmailVerified], process.env.MONGODB_CONNECTION),
     UserModule,
+    TypeOrmModule.forFeature([LoginKeys, ResetPasswordKeys]),
+    // TypeOrmModule.forFeature([EmailVerified], 'mongodbConnection'),
   ],
   providers: [EmailService],
   exports: [EmailService],
 })
-export class EmailModule {}
+export class EmailModule {
+  constructor() {
+    console.log(process.env.MONGODB_CONNECTION);
+  }
+}

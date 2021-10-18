@@ -5,3 +5,9 @@ export class ErrorException extends HttpException {
     super('An error occured', HttpStatus.BAD_REQUEST);
   }
 }
+
+export class customErrorMessage extends HttpException {
+  constructor(error: string, status: HttpStatus) {
+    super(error, status);
+  }
+}

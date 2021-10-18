@@ -25,11 +25,13 @@ import { VideosModule } from './videos/videos.module';
 import { MessagesModule } from './messages/messages.module';
 import { EmailModule } from './email/email.module';
 import { TranslationsModule } from './translations/translations.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
-    TypeOrmModule.forRoot(ormconfig.ormconfigMongoDB),
+    // TypeOrmModule.forRoot(ormconfig.ormconfigMongoDB),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/personal-trainer-two'),
     TypeOrmModule.forRoot(ormconfig.ormconfigMySQL),
     AuthModule,
     OwnerModule,

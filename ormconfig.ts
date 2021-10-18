@@ -3,7 +3,7 @@ import { ConnectionOptions } from 'typeorm';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
-const ormconfig: ConnectionOptions = {
+const ormconfigMySQL: ConnectionOptions = {
   type: 'mysql',
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT),
@@ -20,4 +20,15 @@ const ormconfig: ConnectionOptions = {
   },
 };
 
-export = ormconfig;
+// const ormconfigMongoDB: ConnectionOptions = {
+//   name: process.env.MONGODB_CONNECTION,
+//   type: 'mongodb',
+//   host: process.env.MONGODB_HOST,
+//   url: process.env.MONGODB_URL,
+//   entities: ['dist/**/*.schema.js'],
+//   logging: false,
+//   useNewUrlParser: true,
+//   synchronize: process.env.DB_SYNC == 'true' ? true : false,
+// };
+const object = { ormconfigMySQL };
+export = object;
