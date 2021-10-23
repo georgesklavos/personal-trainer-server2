@@ -1,11 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
+import { IsDefined, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Document } from 'mongoose';
 
 export type EmailVerifiedDocument = EmailVerified & Document;
 
 @Schema({ timestamps: true })
 export class EmailVerified {
+  @IsString()
+  @IsNotEmpty()
+  @Prop({ required: true })
+  subject: string;
+
   @IsString()
   @IsNotEmpty()
   @Prop({ required: true })
@@ -16,7 +21,7 @@ export class EmailVerified {
   @Prop({ required: true })
   description: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   @Prop({ required: true })
   languageId: number;

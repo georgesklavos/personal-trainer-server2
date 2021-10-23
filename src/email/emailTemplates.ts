@@ -1,15 +1,21 @@
 import { emailTemplate } from './email.class';
-// import * as verifyEmailHtml from './emailHtmlTemplates/verifyEmail.html';
-// import * as resetPasswordHtml from './emailHtmlTemplates/resetPassword.html';
+import * as fs from 'fs';
+import { join } from 'path';
 
 export class verifyEmailTemplate extends emailTemplate {
   subject: 'Verify email';
   text: 'Verify email address';
-  constructor(toEmail, fromEmail, values) {
+  constructor(toEmail, fromEmail, translations, code) {
     super();
     this.to = toEmail;
     this.from = fromEmail;
-    // this.html = this.replaceValues(verifyEmailHtml, values);
+    const html = fs.readFileSync(
+      join(__dirname, '/../../templates/verifyEmail.html'),
+    );
+    this.subject = translations.subject;
+    this.text = 'Verify email address';
+    translations.code = code;
+    this.html = this.replaceValues(html, translations);
   }
 }
 
@@ -20,6 +26,16 @@ export class resetPasswordTemplate extends emailTemplate {
     super();
     this.to = toEmail;
     this.from = fromEmail;
-    // this.html = this.replaceValues(resetPasswordHtml, values);
+
+    fs.readFile(
+      __dirname + '../templates/resetPassword.html',
+      function (error, html) {
+        if (error) {
+          throw error;
+        }
+
+        this.html = this.replaceValues(html, values);
+      },
+    );
   }
 }

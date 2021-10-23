@@ -12,7 +12,7 @@ export class UserInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       tap((flow) => {
-        if (flow.password) {
+        if (flow && flow.password) {
           delete flow.password;
         }
       }),

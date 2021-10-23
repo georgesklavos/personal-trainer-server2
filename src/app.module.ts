@@ -32,7 +32,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
     // TypeOrmModule.forRoot(ormconfig.ormconfigMongoDB),
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/personal-trainer-two'),
-    TypeOrmModule.forRoot(ormconfig.ormconfigMySQL),
+    TypeOrmModule.forRoot(ormconfig),
     AuthModule,
     OwnerModule,
     UserModule,

@@ -20,15 +20,4 @@ const ormconfigMySQL: ConnectionOptions = {
   },
 };
 
-// const ormconfigMongoDB: ConnectionOptions = {
-//   name: process.env.MONGODB_CONNECTION,
-//   type: 'mongodb',
-//   host: process.env.MONGODB_HOST,
-//   url: process.env.MONGODB_URL,
-//   entities: ['dist/**/*.schema.js'],
-//   logging: false,
-//   useNewUrlParser: true,
-//   synchronize: process.env.DB_SYNC == 'true' ? true : false,
-// };
-const object = { ormconfigMySQL };
-export = object;
+export = ormconfigMySQL;

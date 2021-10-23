@@ -109,6 +109,8 @@ export class AppController {
   @Post('verifyEmail')
   @UseGuards(JwtAuthGaurd)
   async sendEmail(@Request() req) {
-    this.emailsService.sendVerifyEmail(req.user);
+    // const user = await this.userService.getOneById(req.user.id);
+    // console.log(user);
+    return this.emailsService.sendVerifyEmail(req.user);
   }
 }

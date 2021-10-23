@@ -8,7 +8,7 @@ export abstract class emailTemplate {
   replaceValues(html, values): string {
     html = html.toString();
     for (const key in values) {
-      html.replace(`{${key}}`, values[key]);
+      html = html.replace(`{${key}}`, values[key]);
     }
 
     return html;

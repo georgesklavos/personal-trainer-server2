@@ -15,6 +15,7 @@ import {
   Repository,
 } from 'typeorm';
 import { translations } from './availableTranslations';
+import { getTranslationDto } from './getTranslation.dto';
 import { translationDto } from './translation.dto';
 
 @Injectable()
@@ -36,29 +37,36 @@ export class TranslationsService {
     return translationStrings;
   }
 
-  async createNewTranslation(translationObject: translationDto) {
-    const translatable = translations.find(
-      (el) => el.name == translationObject.translation,
+  private validateTranslatable(translatable) {
+    const checkTranslatable = translations.find(
+      (el) => el.name == translatable,
     );
 
-    if (!translatable) {
+    if (!checkTranslatable) {
       throw new customErrorMessage(
         'Translatable is not valid',
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  private findTranslatableClass(translatable) {
     const keys = Object.keys(this);
     let model;
     keys.forEach((el) => {
       if (this[el]['modelName']) {
-        if (this[el]['modelName'] == translationObject.translation) {
+        if (this[el]['modelName'] == translatable) {
           model = el;
         }
       }
     });
 
+    return model;
+  }
+
+  private async validateLanguage(languageId) {
     const language = await this.languagesRepository.findOne({
-      where: { id: translationObject.data.languageId },
+      where: { id: languageId },
     });
 
     if (!language) {
@@ -68,8 +76,18 @@ export class TranslationsService {
       );
     }
 
+    return languageId;
+  }
+
+  async createNewTranslation(translationObject: translationDto) {
+    this.validateTranslatable(translationObject.translation);
+    const model = this.findTranslatableClass(translationObject.translation);
+    const language = await this.validateLanguage(
+      translationObject.data.languageId,
+    );
+
     const checkTranslation = await this[model].findOne({
-      languageId: translationObject.data.languageId,
+      languageId: language,
     });
     if (checkTranslation) {
       throw new customErrorMessage(
@@ -84,5 +102,25 @@ export class TranslationsService {
     //error an iparxei
     //meta kane neo
     //ftiaje genika neos rolos translator
+  }
+
+  async getTranslation(data: getTranslationDto) {
+    this.validateTranslatable(data.type);
+    const model = this.findTranslatableClass(data.type);
+    const language = await this.validateLanguage(data.languageId);
+
+    let translation = await this[model].findOne({
+      languageId: language,
+    });
+
+    if (!translation) {
+      translation = await this[model]
+        .findOne({
+          languageId: 40,
+        })
+        .select({ createdAt: 0, updatedAt: 0, __v: 0 });
+    }
+
+    return translation;
   }
 }

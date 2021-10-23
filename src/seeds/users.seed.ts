@@ -8,4 +8,6 @@ export const usersSeed = {
   gender: 1,
   language: 1,
   role: 1,
+  emailVerified: 1,
+  passwordVerified: 1,
 };

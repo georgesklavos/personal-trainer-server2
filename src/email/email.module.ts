@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoginKeys } from 'src/entities/loginKeys.entity';
 import { ResetPasswordKeys } from 'src/entities/resetPasswordKeys.entity';
-import { EmailVerified } from 'src/schemas/emailVerified.schema';
-// import { EmailVerifiedSchema } from 'src/schemas/emailVerified.schema';
+import {
+  EmailVerified,
+  EmailVerifiedSchema,
+} from 'src/schemas/emailVerified.schema';
+import { TranslationsModule } from 'src/translations/translations.module';
 import { UserModule } from 'src/users/users.module';
 import { EmailService } from './email.service';
 
@@ -11,13 +15,12 @@ import { EmailService } from './email.service';
   imports: [
     UserModule,
     TypeOrmModule.forFeature([LoginKeys, ResetPasswordKeys]),
-    // TypeOrmModule.forFeature([EmailVerified], 'mongodbConnection'),
+    TranslationsModule,
+    MongooseModule.forFeature([
+      { name: EmailVerified.name, schema: EmailVerifiedSchema },
+    ]),
   ],
   providers: [EmailService],
   exports: [EmailService],
 })
-export class EmailModule {
-  constructor() {
-    console.log(process.env.MONGODB_CONNECTION);
-  }
-}
+export class EmailModule {}

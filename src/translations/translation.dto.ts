@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDefined, ValidateNested } from 'class-validator';
+import { IsDefined, IsString, ValidateNested } from 'class-validator';
 import { Users } from 'src/entities/users.entity';
 import {
   EmailVerified,
@@ -9,6 +9,7 @@ import { ResetPassword } from 'src/schemas/resetPassword.schema';
 
 export class translationDto {
   @IsDefined()
+  @IsString()
   translation: string;
 
   @IsDefined()
@@ -18,8 +19,8 @@ export class translationDto {
     discriminator: {
       property: 'type',
       subTypes: [
-        { value: EmailVerified, name: 'EmailVerified' },
-        { value: ResetPassword, name: 'EmailResetPassword' },
+        { value: EmailVerified, name: EmailVerified.name },
+        { value: ResetPassword, name: ResetPassword.name },
       ],
     },
   })

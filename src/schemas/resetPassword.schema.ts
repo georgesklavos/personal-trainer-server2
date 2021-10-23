@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Document } from 'mongoose';
 
 export type ResetPasswordDocument = ResetPassword & Document;
@@ -16,10 +16,13 @@ export class ResetPassword {
   @Prop()
   description: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   @Prop()
   languageId: number;
+
+  @IsString()
+  test: string;
 }
 
 export const ResetPasswordSchema = SchemaFactory.createForClass(ResetPassword);

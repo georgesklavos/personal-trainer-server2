@@ -44,6 +44,9 @@ export class Users {
   @JoinColumn()
   gender: Genders;
 
+  @Column({
+    name: 'languageId',
+  })
   @ManyToOne(() => Languages)
   @JoinColumn()
   language: Languages;

@@ -10,4 +10,7 @@ export class userAuthInfo {
   @IsDefined()
   @IsNumber()
   role: number;
+  @IsDefined()
+  @IsNumber()
+  language: number;
 }
