@@ -8,6 +8,6 @@ export class Countries {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: 2 })
   code: string;
 }

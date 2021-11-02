@@ -9,8 +9,8 @@ export class CoolUpExercises {
   @ManyToOne(() => Exercises, (exercise) => exercise.coolUpExercises)
   exercise: Exercises;
 
-  @Column({ type: 'varchar' })
-  name: string;
+  @Column({ type: 'int' })
+  name: number;
 
   @Column({ type: 'int' })
   value: number;

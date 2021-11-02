@@ -6,7 +6,7 @@ import {
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { ClientService } from 'src/client/clients.service';
 import { Clients } from 'src/entities/clients.entity';
@@ -21,6 +21,7 @@ export class TrainerController {
   ) {}
 
   @ApiTags('Trainer')
+  @ApiOkResponse({ description: 'Get clients' })
   @UseGuards(JwtAuthGaurd, IsTrainer)
   @Get('clients')
   async getUsers(@Request() req): Promise<Clients[]> {

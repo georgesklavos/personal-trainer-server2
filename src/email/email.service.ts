@@ -9,7 +9,7 @@ import { Users } from 'src/entities/users.entity';
 import {
   EmailVerified,
   EmailVerifiedDocument,
-} from 'src/schemas/emailVerified.schema';
+} from 'src/schemas/emailVerifiedTranslations.schema';
 import { translations } from 'src/translations/availableTranslations';
 import { TranslationsService } from 'src/translations/translations.service';
 import { UserService } from 'src/users/users.service';

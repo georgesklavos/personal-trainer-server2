@@ -28,7 +28,7 @@ import { trainerCreateUpdateDto } from './trainerCreateUpdate.dto';
 import { clientCreateUpdateDto } from './clientCreateUpdate.dto';
 import { ownerCreateUpdateDto } from './ownerCreateUpdate.dto';
 import { IsOwner } from 'src/guards/isOwner.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller()
 export class OwnerController {
@@ -42,6 +42,7 @@ export class OwnerController {
   ) {}
 
   @ApiTags('Owner')
+  @ApiOkResponse({ description: 'Create trainer' })
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Put('trainer')
   async createTraienr(@Request() req, @Body() data: trainerCreateUpdateDto) {
@@ -66,6 +67,7 @@ export class OwnerController {
   }
 
   @ApiTags('Owner')
+  @ApiOkResponse({ description: 'Create client' })
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Put('client')
   async createClient(@Request() req, @Body() data: clientCreateUpdateDto) {
@@ -90,6 +92,7 @@ export class OwnerController {
   }
 
   @ApiTags('Owner')
+  @ApiOkResponse({ description: 'Get clients' })
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Get('clients')
   async getClients(@Request() req): Promise<Clients[]> {
@@ -111,6 +114,7 @@ export class OwnerController {
   }
 
   @ApiTags('Owner')
+  @ApiOkResponse({ description: 'Get trainers' })
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Get('trainers')
   async getTrainers(@Request() req): Promise<Trainers[]> {
@@ -132,6 +136,7 @@ export class OwnerController {
   }
 
   @ApiTags('Owner')
+  @ApiOkResponse({ description: 'Edit client' })
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Patch('client/:id')
   async updateClient(@Param() params, @Body() data: clientCreateUpdateDto) {
@@ -154,6 +159,7 @@ export class OwnerController {
   }
 
   @ApiTags('Owner')
+  @ApiOkResponse({ description: 'Edit trainer' })
   @UseGuards(JwtAuthGaurd, IsOwner)
   @Patch('trainer/:id')
   async updateTrainer(@Param() params, @Body() data: trainerCreateUpdateDto) {
@@ -176,7 +182,8 @@ export class OwnerController {
   }
 
   @ApiTags('Owner')
-  @UseGuards(JwtAuthGaurd, IsOwner)
+  @ApiOkResponse({ description: 'Get helper tables' })
+  @UseGuards(JwtAuthGaurd)
   @Get('helperTables')
   async getHelperTables() {
     try {

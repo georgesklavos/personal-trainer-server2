@@ -21,7 +21,7 @@ export class Messages {
   @Column({ type: 'varchar' })
   message: string;
 
-  @Column({type: 'boolean'})
+  @Column({ type: 'boolean' })
   deleted: boolean;
 
   @CreateDateColumn()

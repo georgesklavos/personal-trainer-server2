@@ -21,6 +21,7 @@ async function bootstrap() {
       .addTag('Support', 'Apis for the support role')
       .addTag('Owner-Trainer', 'Apis for the roles owner and trainer')
       .addTag('Mutual', 'Apis for all the roles')
+      .addTag('Translator', 'Apis for the translator role')
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('swagger', app, document);

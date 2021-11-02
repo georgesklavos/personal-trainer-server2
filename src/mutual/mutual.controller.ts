@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { MutualService } from './mutual.service';
 
@@ -8,6 +8,7 @@ export class MutualController {
   constructor(private readonly mutualService: MutualService) {}
 
   @ApiTags('Mutual')
+  @ApiOkResponse({ description: 'Get types' })
   @Get('/types')
   @UseGuards(JwtAuthGaurd)
   async getTypes() {

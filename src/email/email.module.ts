@@ -6,7 +6,7 @@ import { ResetPasswordKeys } from 'src/entities/resetPasswordKeys.entity';
 import {
   EmailVerified,
   EmailVerifiedSchema,
-} from 'src/schemas/emailVerified.schema';
+} from 'src/schemas/emailVerifiedTranslations.schema';
 import { TranslationsModule } from 'src/translations/translations.module';
 import { UserModule } from 'src/users/users.module';
 import { EmailService } from './email.service';

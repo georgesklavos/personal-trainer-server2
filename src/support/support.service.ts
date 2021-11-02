@@ -24,7 +24,7 @@ export class SupportService {
   async create(data) {
     const supportUser = await this.usersRepository
       .createQueryBuilder('user')
-      .where('user.role = :id', { id: roles.Support as unknown })
+      .where('user.role.id = :id', { id: roles.Support })
       .orderBy('RAND()')
       .limit(1)
       .execute();

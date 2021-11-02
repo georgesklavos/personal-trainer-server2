@@ -9,7 +9,7 @@ import {
   HttpStatus,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.gaurd';
 import { JwtAuthGaurd } from './auth/jwt.auth.gaurd';
@@ -18,7 +18,7 @@ import { EmailService } from './email/email.service';
 import { Clients } from './entities/clients.entity';
 import { Owners } from './entities/owners.entity';
 import { Trainers } from './entities/trainers.entity';
-import { ErrorException } from './filters/error.exceptions';
+import { customErrorMessage, ErrorException } from './filters/error.exceptions';
 import { LoginInformationService } from './login-information/login-information.service';
 import { OwnerService } from './owner/owner.service';
 import { ownerCreateUpdateDto } from './owner/ownerCreateUpdate.dto';
@@ -42,6 +42,7 @@ export class AppController {
   ) {}
 
   @ApiTags('Athentication')
+  @ApiCreatedResponse({ description: 'User registration' })
   @UseInterceptors(UserInterceptor)
   @Post('signup')
   async signup(@Body() data: ownerCreateUpdateDto) {
@@ -63,6 +64,7 @@ export class AppController {
   }
 
   @ApiTags('Athentication')
+  @ApiOkResponse({ description: 'User login' })
   //Vale tin diadikasia twn ips se allo service
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -76,18 +78,13 @@ export class AppController {
   }
 
   @ApiTags('Mutual')
+  @ApiOkResponse({ description: 'Update user info' })
   @UseGuards(LocalAuthGuard)
   @Put('update')
   updateProfile(@Request() req, @Body() body: updateProfileDto) {
     try {
       if (req.user.id != body.user.id) {
-        throw new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Invalid user',
-          },
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new customErrorMessage('Invalid user', HttpStatus.BAD_REQUEST);
       }
       this.userService.update(body.user);
       switch (body.user.role.id) {
@@ -106,8 +103,10 @@ export class AppController {
     }
   }
 
-  @Post('verifyEmail')
+  @ApiTags('Mutual')
+  @ApiOkResponse({ description: 'Verify user email' })
   @UseGuards(JwtAuthGaurd)
+  @Post('verifyEmail')
   async sendEmail(@Request() req) {
     // const user = await this.userService.getOneById(req.user.id);
     // console.log(user);

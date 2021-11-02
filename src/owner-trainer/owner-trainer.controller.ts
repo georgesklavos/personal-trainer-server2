@@ -13,7 +13,7 @@ import {
   Put,
   Request,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { ClientService } from 'src/client/clients.service';
 import { DaysService } from 'src/days/days.service';
@@ -49,6 +49,7 @@ export class OwnerTrainerController {
   private readonly Logger = new Logger(OwnerTrainerController.name);
 
   @ApiTags('Owner-Trainer')
+  @ApiOkResponse({ description: 'Trainer viewed api' })
   @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Put('trainerViewed/:user')
   async viewedByTrainer(@Param() params) {
@@ -67,6 +68,7 @@ export class OwnerTrainerController {
   }
 
   @ApiTags('Owner-Trainer')
+  @ApiOkResponse({ description: 'Get payment' })
   @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Get('payment/')
   async verifyPayment(@Query() params) {
@@ -89,6 +91,7 @@ export class OwnerTrainerController {
   }
 
   @ApiTags('Owner-Trainer')
+  @ApiOkResponse({ description: 'Create verify payment' })
   @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Put('verifyPayment/')
   async createPayment(@Body() body: VerifyPaymentDto, @Req() req) {
@@ -102,6 +105,7 @@ export class OwnerTrainerController {
   }
 
   @ApiTags('Owner-Trainer')
+  @ApiOkResponse({ description: 'Add how you feel' })
   @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Get('howYouFeel/')
   async getHowYouFeel(@Param() params: HowYouFeelDto): Promise<HowYouFeel[]> {
@@ -115,6 +119,7 @@ export class OwnerTrainerController {
   }
 
   @ApiTags('Owner-Trainer')
+  @ApiOkResponse({ description: 'Create day' })
   @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Post('/day')
   async createDay(@Request() req, @Body() data: dayCreateDto) {
@@ -130,6 +135,7 @@ export class OwnerTrainerController {
   }
 
   @ApiTags('Owner-Trainer')
+  @ApiOkResponse({ description: 'Update day' })
   @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Put('/day')
   async updateDay(@Body() data: dayCreateUpdateDto) {
@@ -143,6 +149,7 @@ export class OwnerTrainerController {
   }
 
   @ApiTags('Owner-Trainer')
+  @ApiOkResponse({ description: 'Get exercises' })
   @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Get('/day/exercise')
   async getExercises(@Body() data: searchUserDateDto) {
@@ -155,6 +162,7 @@ export class OwnerTrainerController {
   }
 
   @ApiTags('Owner-Trainer')
+  @ApiOkResponse({ description: 'Get macros' })
   @UseGuards(JwtAuthGaurd, IsOwnerOrIsTrainer)
   @Get('/day/macros')
   async getMacros(@Req() req, @Body('user') user): Promise<Macros> {

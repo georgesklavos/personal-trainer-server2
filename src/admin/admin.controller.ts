@@ -9,7 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGaurd } from 'src/auth/jwt.auth.gaurd';
 import { Users } from 'src/entities/users.entity';
 import { ErrorException } from 'src/filters/error.exceptions';
@@ -33,6 +33,7 @@ export class AdminController {
   private readonly Logger = new Logger(AdminController.name);
 
   @ApiTags('Admin')
+  @ApiOkResponse({ description: 'Create user' })
   @UseInterceptors(UserInterceptor)
   @Post('/createUser')
   async createUser(@Body() data: ownerCreateUpdateDto) {
@@ -57,6 +58,7 @@ export class AdminController {
   }
 
   @ApiTags('Admin')
+  @ApiOkResponse({ description: 'Get users' })
   // Create in the app controller update api for all the roles but the same api and change the data for each role
   @UseGuards(JwtAuthGaurd, IsAdmin)
   @Get('/getUsers')
@@ -72,6 +74,7 @@ export class AdminController {
   }
 
   @ApiTags('Admin')
+  @ApiOkResponse({ description: 'Get role info' })
   @UseGuards(JwtAuthGaurd, IsAdmin)
   @Get('/roleInfo')
   async getRoleInfo(@Body() data: Users) {

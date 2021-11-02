@@ -4,8 +4,9 @@ import { Users } from 'src/entities/users.entity';
 import {
   EmailVerified,
   EmailVerifiedSchema,
-} from 'src/schemas/emailVerified.schema';
-import { ResetPassword } from 'src/schemas/resetPassword.schema';
+} from 'src/schemas/emailVerifiedTranslations.schema';
+import { ExerciseModes } from 'src/schemas/exerciseModeTranslations.schema';
+import { ResetPassword } from 'src/schemas/resetPasswordTranslations.schema';
 
 export class translationDto {
   @IsDefined()
@@ -21,6 +22,7 @@ export class translationDto {
       subTypes: [
         { value: EmailVerified, name: EmailVerified.name },
         { value: ResetPassword, name: ResetPassword.name },
+        { value: ExerciseModes, name: ExerciseModes.name },
       ],
     },
   })
