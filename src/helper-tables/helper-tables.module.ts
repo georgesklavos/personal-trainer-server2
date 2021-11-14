@@ -9,6 +9,7 @@ import { Programs } from 'src/entities/programs.entity';
 import { Roles } from 'src/entities/roles.entity';
 import { Systems } from 'src/entities/systems.entity';
 import { Targets } from 'src/entities/targets.entity';
+import { TranslationsModule } from 'src/translations/translations.module';
 import { HelperTablesService } from './helper-tables.service';
 
 @Module({
@@ -24,6 +25,7 @@ import { HelperTablesService } from './helper-tables.service';
       Systems,
       Targets,
     ]),
+    TranslationsModule,
   ],
   providers: [HelperTablesService],
   exports: [HelperTablesService],

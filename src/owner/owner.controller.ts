@@ -185,9 +185,12 @@ export class OwnerController {
   @ApiOkResponse({ description: 'Get helper tables' })
   @UseGuards(JwtAuthGaurd)
   @Get('helperTables')
-  async getHelperTables() {
+  async getHelperTables(@Request() req) {
     try {
-      return await this.helperTablesService.getHelperTables([]);
+      return await this.helperTablesService.getHelperTables(
+        [],
+        req.user.language,
+      );
     } catch (err) {
       throw new HttpException(
         {

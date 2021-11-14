@@ -1,12 +1,16 @@
 import { Type } from 'class-transformer';
 import { IsDefined, IsString, ValidateNested } from 'class-validator';
-import { Users } from 'src/entities/users.entity';
-import {
-  EmailVerified,
-  EmailVerifiedSchema,
-} from 'src/schemas/emailVerifiedTranslations.schema';
-import { ExerciseModes } from 'src/schemas/exerciseModeTranslations.schema';
-import { ResetPassword } from 'src/schemas/resetPasswordTranslations.schema';
+import { EmailVerifiedTs } from 'src/entities/emailVerifiedTr.entity';
+import { ExerciseModesTs } from 'src/entities/exerciseModesTr.entity';
+import { ExerciseOptionsTs } from 'src/entities/exerciseOptionsTr.entity';
+import { GendersTs } from 'src/entities/gendersTr.entity';
+import { LanguagesTs } from 'src/entities/languagesTr.entity';
+import { LevelsTs } from 'src/entities/levelsTr.entity';
+import { ProgramsTs } from 'src/entities/programsTr.entity';
+import { ResetPasswordTs } from 'src/entities/resetPasswordsTr.entity';
+import { RolesTs } from 'src/entities/rolesTr.entity';
+import { SystemsTs } from 'src/entities/systemsTr.entity';
+import { TargetsTs } from 'src/entities/targetsTr.entity';
 
 export class translationDto {
   @IsDefined()
@@ -20,11 +24,30 @@ export class translationDto {
     discriminator: {
       property: 'type',
       subTypes: [
-        { value: EmailVerified, name: EmailVerified.name },
-        { value: ResetPassword, name: ResetPassword.name },
-        { value: ExerciseModes, name: ExerciseModes.name },
+        { value: EmailVerifiedTs, name: EmailVerifiedTs.name },
+        { value: ResetPasswordTs, name: ResetPasswordTs.name },
+        { value: ExerciseModesTs, name: ExerciseModesTs.name },
+        { value: ExerciseOptionsTs, name: ExerciseOptionsTs.name },
+        { value: GendersTs, name: GendersTs.name },
+        { value: LevelsTs, name: LevelsTs.name },
+        { value: ProgramsTs, name: ProgramsTs.name },
+        { value: RolesTs, name: RolesTs.name },
+        { value: SystemsTs, name: SystemsTs.name },
+        { value: TargetsTs, name: TargetsTs.name },
+        { value: LanguagesTs, name: LanguagesTs.name },
       ],
     },
   })
-  data: EmailVerified | ResetPassword;
+  data:
+    | EmailVerifiedTs
+    | ResetPasswordTs
+    | ExerciseModesTs
+    | ExerciseOptionsTs
+    | GendersTs
+    | LevelsTs
+    | ProgramsTs
+    | RolesTs
+    | SystemsTs
+    | TargetsTs
+    | LanguagesTs;
 }

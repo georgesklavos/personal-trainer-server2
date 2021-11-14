@@ -6,12 +6,8 @@ import { Model } from 'mongoose';
 import { LoginKeys } from 'src/entities/loginKeys.entity';
 import { ResetPasswordKeys } from 'src/entities/resetPasswordKeys.entity';
 import { Users } from 'src/entities/users.entity';
-import {
-  EmailVerified,
-  EmailVerifiedDocument,
-} from 'src/schemas/emailVerifiedTranslations.schema';
-import { translations } from 'src/translations/availableTranslations';
-import { TranslationsService } from 'src/translations/translations.service';
+// import { translations } from 'src/translations/availableTranslations';
+// import { TranslationsService } from 'src/translations/translations.service';
 import { UserService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { resetPasswordTemplate, verifyEmailTemplate } from './emailTemplates';
@@ -23,10 +19,7 @@ export class EmailService {
     private readonly loginKeysRepository: Repository<LoginKeys>,
     private readonly userService: UserService,
     @InjectRepository(ResetPasswordKeys)
-    private readonly resetPasswordKeys: Repository<ResetPasswordKeys>,
-    private readonly translationsService: TranslationsService,
-    @InjectModel(EmailVerified.name)
-    private emailVerifiedModel: Model<EmailVerifiedDocument>,
+    private readonly resetPasswordKeys: Repository<ResetPasswordKeys>, // private readonly translationsService: TranslationsService,
   ) {}
   async sendVerifyEmail(user: Users) {
     sgmail.setApiKey(process.env.SENDGRID_KEY_EMAIL);
@@ -35,27 +28,27 @@ export class EmailService {
       user,
       code,
     });
-    const translations = await this.translationsService.getTranslation({
-      type: EmailVerified.name,
-      languageId: user.language,
-    });
+    // const translations = await this.translationsService.getTranslation({
+    //   // type: EmailVerified.name,
+    //   languageId: user.language,
+    // });
 
-    const msg = new verifyEmailTemplate(
-      user.email,
-      process.env.EMAIL,
-      translations,
-      code,
-    );
-    console.log(msg);
-    sgmail
-      .send(msg)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-        return err;
-      });
+    // const msg = new verifyEmailTemplate(
+    //   user.email,
+    //   process.env.EMAIL,
+    //   // translations,
+    //   code,
+    // );
+    // console.log(msg);
+    // sgmail
+    //   .send(msg)
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     return err;
+    //   });
   }
 
   async verifyEmailCode(email: string, code: string) {

@@ -13,7 +13,7 @@ export class TranslationsController {
 
   @ApiTags('Translator')
   @ApiOkResponse({ description: 'Get translatables' })
-  @UseGuards(JwtAuthGaurd, IsTranslator)
+  @UseGuards(JwtAuthGaurd)
   @Get('getTranslatables')
   async avalableForTranslation() {
     return this.translationsService.getTranslatables();
@@ -33,7 +33,7 @@ export class TranslationsController {
 
   @ApiTags('Translator')
   @ApiOkResponse({ description: 'Update translation' })
-  @UseGuards(JwtAuthGaurd, IsTranslator)
+  @UseGuards(JwtAuthGaurd)
   @Post('translation')
   async updateTranslation(@Body() body: translationDto) {
     try {
@@ -45,7 +45,7 @@ export class TranslationsController {
 
   @ApiTags('Translator')
   @ApiOkResponse({ description: 'Get translation' })
-  @UseGuards(JwtAuthGaurd, IsTranslator)
+  @UseGuards(JwtAuthGaurd)
   @Get('translation')
   async getTranslation(@Body() body: getTranslationDto) {
     try {
